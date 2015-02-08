@@ -9,6 +9,13 @@
 #consortium = AMP-AD
 #study = Emory
 #center = Emory
-#platform = ??
-#other = ??
+#platform = LTQOrbitrapXL
 #extension = 7z, txt, fasta
+
+require(synapseClient)
+synapseLogin()
+
+##query master table for emory files
+emoryTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'Emory%\'',loadResult = TRUE)
+#synList <- vector('list',nrow(emoryTable@values))
+grabAllEmoryData <- sapply(as.character(emoryTable@values$originalSynapseId),synGet)
