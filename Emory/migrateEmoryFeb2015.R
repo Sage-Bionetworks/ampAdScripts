@@ -18,6 +18,20 @@ synapseLogin()
 ##query master table for emory files
 emoryTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'Emory%\'',loadResult = TRUE)
 #synList <- vector('list',nrow(emoryTable@values))
-grabAllEmoryData <- sapply(as.character(emoryTable@values$originalSynapseId),synGet)
+#grabAllEmoryData <- sapply(as.character(emoryTable@values$originalSynapseId),synGet)
 
+#download the data
+
+#define new names for each new file
+#define parentid for each new file
+#define annotations for each file
+#define provenance for each file
+#create new file
+#upload file to new location with provenance
+#update progress table with new parentid, new name, provenance, etc...
+
+####SCRATCH
+clinical <- synGet(emoryTable@values$originalSynapseId[12])
+str <- paste('mv ',clinical@filePath,' ~/')
+system(str)
 
