@@ -19,3 +19,5 @@ synapseLogin()
 emoryTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'Emory%\'',loadResult = TRUE)
 #synList <- vector('list',nrow(emoryTable@values))
 grabAllEmoryData <- sapply(as.character(emoryTable@values$originalSynapseId),synGet)
+
+
