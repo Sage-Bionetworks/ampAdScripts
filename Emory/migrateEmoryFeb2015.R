@@ -31,12 +31,12 @@ emoryTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'Emory%\'
 #update progress table with new parentid, new name, provenance, etc...
 
 ####SCRATCH
-clinical <- synGet(emoryTable@values$originalSynapseId[12])
-str <- paste('cp ',clinical@filePath,' ~/')
-system(str)
+#clinical <- synGet(emoryTable@values$originalSynapseId[12])
+#str <- paste('cp ',clinical@filePath,' ~/')
+#system(str)
 
-#clean up clinical file
-  #write function to clean up clinical file
+#clean up clinical file done
+  #write function to clean up clinical file done
     #rename columns done
     #fix NAs done
     #split race and sex column into two columns done
@@ -78,6 +78,18 @@ emoryClinicalClean <- cleanEmoryClinical()
 write.csv(emoryClinicalClean,file='Emory//processedEmoryPreliminaryClinical.csv',row.names=FALSE,quote=FALSE)
 
 #move clinical to Table in staging
+
+#tcresult<-as.tableColumns(emoryClinicalClean)
+#cols<-tcresult$tableColumns
+#fileHandleId<-tcresult$fileHandleId
+
+#projectId<-'syn2580853'
+#need to add appropriate acl!
+#schema<-TableSchema(name="AMPAD_Emory_Emory_Clinical", parent=projectId, columns=cols)
+#table<-Table(schema, fileHandleId)
+#table<-synStore(table, retrieveData=TRUE)
+
+
   #change file name
   #add provenance
   #add annotations
