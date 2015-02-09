@@ -75,6 +75,7 @@ cleanEmoryClinical <- function(){
 }
 
 emoryClinicalClean <- cleanEmoryClinical()
+write.csv(emoryClinicalClean,file='Emory//processedEmoryPreliminaryClinical.csv',row.names=FALSE,quote=FALSE)
 
 #move clinical to Table in staging
   #change file name
