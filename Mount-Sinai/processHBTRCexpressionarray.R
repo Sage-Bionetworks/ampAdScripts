@@ -81,7 +81,7 @@ write.table(metadata, file=newmetafilename, sep="\t", row.names=FALSE, quote=FAL
 synmetafile <- File(newmetafilename, parentId="syn3157691",
                 name=paste(study, center, platform, dataType))
 
-act <- Activity(name="Merge files", used=list(metafile), executed=list(thisScript))
+act <- Activity(name="Add disease status column", used=list(metafile, alzfile, normfile), executed=list(thisScript))
 generatedBy(synmetafile) <- act
 
 o <- synStore(synmetafile)
