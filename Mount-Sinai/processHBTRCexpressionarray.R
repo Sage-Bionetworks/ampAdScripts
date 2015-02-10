@@ -3,7 +3,13 @@ library(plyr)
 library(dplyr)
 library(reshape2)
 
+library(rGithubClient)
+
 synapseLogin()
+
+## Get this script
+thisRepo <- getRepo("Sage-Bionetworks/ampAdScripts")
+thisScript <- getPermlink(thisRepo, "Mount-Sinai/processHBTRCexpressionarray.R")
 
 ## Get files
 alzfile <- synGet("syn2706445")
@@ -33,10 +39,10 @@ normsamplecolnames <- colnames(normdata)[11:ncol(normdata)]
 ## Update metadata with disease state
 ##### After doing this, there are a number of samples not in the alz or normal files
 ##### They all have has.expression == FALSE, but some have genotyped == TRUE
-metadata <- transform(metadata, DiseaseState=NA)
+metadata <- transform(metadata, DiseaseStatus=NA)
 metadata$DiseaseStatus[match(alzsamplecolnames, metadata$TID)] <- "Alzheimer's"
 metadata$DiseaseStatus[match(normsamplecolnames, metadata$TID)] <- "Control"
-metadata <- transform(metadata, DiseaseState=factor(DiseaseState))
+metadata <- transform(metadata, DiseaseStatus=factor(DiseaseStatus))
 
 mergeddata <- cbind(alzdata[, alzmetacolnames],
                     alzdata[, alzsamplecolnames],
@@ -55,6 +61,14 @@ newdatafilename <- paste(paste(study, center, platform, other, sep="_"),
 
 write.table(mergeddata, file=newdatafilename, sep="\t", row.names=FALSE, quote=FALSE)
 
+syndatafile <- File(newdatafilename, parentId="syn3157688",
+                name=paste(study, center, platform, other))
+
+act <- Activity(name="Merge files", used=list(alzfile, normfile), executed=thisScript)
+generatedBy(syndatafile) <- act
+
+o <- synStore(syndatafile)
+
 ## write metadata
 dataType <- "metaData"
 extension <- "tsv"
@@ -63,3 +77,11 @@ newmetafilename <- paste(paste(study, center, dataType, sep="_"),
                          "tsv", sep=".")
 
 write.table(metadata, file=newmetafilename, sep="\t", row.names=FALSE, quote=FALSE)
+
+synmetafile <- File(newmetafilename, parentId="syn3157688",
+                name=paste(study, center, platform, dataType))
+
+act <- Activity(name="Merge files", used=list(metafile), executed=list(thisScript))
+generatedBy(synmetafile) <- act
+
+o <- synStore(synmetafile)
