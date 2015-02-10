@@ -5,6 +5,11 @@ library(reshape2)
 
 synapseLogin()
 
+## Get this script
+thisRepo <- getRepo("Sage-Bionetworks/ampAdScripts")
+thisScript <- getPermlink(thisRepo, "Rush-Broad/mergeROSMAPMethylationData.R")
+
+# Function to get all files from Synapse
 readData <- function(x) {
   o <- synGet(x$id)
   # read.delim(o@filePath)
@@ -41,24 +46,11 @@ newannotfilename <- paste(paste(study, center, platform, other, sep="_"),
 
 write.table(mergedAnnot, file=newannotfilename, sep="\t", row.names=FALSE, quote=FALSE)
 
-act <- Activity("")
-# ## Cannot merge data as such, too large/too many copies of data in R
-# ## Did it on belltown using the cmd line
+synannotfile <- File(newannotfilename, parentId="",
+	             name=paste(study, center, platform, other))
 
-# ## Make merged data
-# mergedData <- ddply(resData, .(id), readData)
-# mergedData$id <- NULL
-# 
-# ## sort annotations on probe TargetID
-# mergedData <- arrange(mergedData, TargetID)
-# 
-# ## Write merged data
-# 
-# study <- "ROSMAP"
-# center <- "Rush-Broad"
-# platform <- "HumanMethylation450"
-# other <- "740_imputed"
-# extension <- "tsv"
-# 
-# newdatafilename <- paste(paste(study, center, platform, other, sep="_"),
-#                          extension, sep=".")
+act <- Activity("Merge files", used=list(c(mergedAnnot$id)), executed=list(thisScript))
+
+generatedBy(synannotfile) <- act
+
+synannotobj <- synStore(synannotfile)
