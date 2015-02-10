@@ -49,23 +49,30 @@ mergeddata <- cbind(alzdata[, alzmetacolnames],
                     normdata[, normsamplecolnames])
 colnames(mergeddata) <- gsub("^X", "", colnames(mergeddata))
 
+consortium <- "AMP-AD"
 study <- "HBTRC"
 center <- "MSSM"
-platform <- "Agilent44Karray"
+platform <- "IlluminaHumanHap650Y"
 other <- "PFC_AgeCorrected_all"
 extension <- "tsv"
+disease <- c("Alzheimer’s Disease", "Control")
+organism <- "human"
+dataType <- "DNA"
 
 ## write data
-newdatafilename <- paste(paste(study, center, platform, other, sep="_"),
+newdatafilename <- paste(paste(consortium, study, center, platform, other, sep="_"),
                          "tsv", sep=".")
 
 write.table(mergeddata, file=newdatafilename, sep="\t", row.names=FALSE, quote=FALSE)
 
 syndatafile <- File(newdatafilename, parentId="syn3157688",
-                name=paste(study, center, platform, other))
+                name=paste(consortium, study, center, platform, other))
 
 act <- Activity(name="Merge files", used=list(alzfile, normfile), executed=thisScript)
 generatedBy(syndatafile) <- act
+
+synSetAnnotations(syndatafile) <- list(consortium=consortium, study=study, center=center, platform=platform, 
+                                       dataType=dataType, organism=organism, disease=disease)
 
 o <- synStore(syndatafile)
 
@@ -83,5 +90,8 @@ synmetafile <- File(newmetafilename, parentId="syn3157691",
 
 act <- Activity(name="Add disease status column", used=list(metafile, alzfile, normfile), executed=list(thisScript))
 generatedBy(synmetafile) <- act
+
+synSetAnnotations(synmetafile) <- list(consortium=consortium, study=study, center=center, platform=platform, 
+                                       dataType="metaData", organism=organism, disease=disease)
 
 o <- synStore(synmetafile)
