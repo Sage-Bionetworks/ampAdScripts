@@ -36,4 +36,4 @@ NEWPARENTID=syn3157275
 usedIds=`cat ${LISTINGFILE} | xargs`
 annotations="'{\"consortium\": \"${consortium}\", \"platform\" : \"${platform}\", \"study\": \"${study}\", \"center\": \"${center}\", \"dataType\": \"${dataType}\", \"organism\": \"${organism}\", \"tissueType\": \"${tissueType}\", \"tissueTypeAbrv\": \"${tissueTypeAbrv}\"}'"
 
-# echo synapse store ${OUTPUTFILE}.gz --parentId ${NEWPARENTID} --name \"${NAME}\" --used ${usedIds} --annotations ${annotations}
+synapse store ${OUTPUTFILE}.gz --parentId ${NEWPARENTID} --name \"${NAME}\" --used ${usedIds} --annotations ${annotations}
