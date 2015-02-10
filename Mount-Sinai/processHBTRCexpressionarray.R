@@ -80,13 +80,13 @@ o <- synStore(syndatafile)
 dataType <- "metaData"
 extension <- "tsv"
 
-newmetafilename <- paste(paste(study, center, dataType, sep="_"),
+newmetafilename <- paste(paste(consortium, study, center, dataType, sep="_"),
                          "tsv", sep=".")
 
 write.table(metadata, file=newmetafilename, sep="\t", row.names=FALSE, quote=FALSE)
 
 synmetafile <- File(newmetafilename, parentId="syn3157691",
-                name=paste(study, center, platform, dataType))
+                name=paste(consortium, study, center, platform, dataType))
 
 act <- Activity(name="Add disease status column", used=list(metafile, alzfile, normfile), executed=list(thisScript))
 generatedBy(synmetafile) <- act
