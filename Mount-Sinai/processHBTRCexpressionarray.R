@@ -44,10 +44,10 @@ metadata$DiseaseStatus[match(alzsamplecolnames, metadata$TID)] <- "Alzheimer's"
 metadata$DiseaseStatus[match(normsamplecolnames, metadata$TID)] <- "Control"
 metadata <- transform(metadata, DiseaseStatus=factor(DiseaseStatus))
 
-# mergeddata <- cbind(alzdata[, alzmetacolnames],
-#                     alzdata[, alzsamplecolnames],
-#                     normdata[, normsamplecolnames])
-# colnames(mergeddata) <- gsub("^X", "", colnames(mergeddata))
+mergeddata <- cbind(alzdata[, alzmetacolnames],
+                    alzdata[, alzsamplecolnames],
+                    normdata[, normsamplecolnames])
+colnames(mergeddata) <- gsub("^X", "", colnames(mergeddata))
 
 consortium <- "AMP-AD"
 study <- "HBTRC"
