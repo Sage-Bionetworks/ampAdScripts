@@ -78,7 +78,7 @@ newmetafilename <- paste(paste(study, center, dataType, sep="_"),
 
 write.table(metadata, file=newmetafilename, sep="\t", row.names=FALSE, quote=FALSE)
 
-synmetafile <- File(newmetafilename, parentId="syn3157688",
+synmetafile <- File(newmetafilename, parentId="syn3157691",
                 name=paste(study, center, platform, dataType))
 
 act <- Activity(name="Merge files", used=list(metafile), executed=list(thisScript))
