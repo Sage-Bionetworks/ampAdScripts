@@ -17,13 +17,13 @@ synapseLogin()
 
 ##query master table for emory files
 emoryTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'Emory%\'',loadResult = TRUE)
-#synList <- vector('list',nrow(emoryTable@values))
-#grabAllEmoryData <- sapply(as.character(emoryTable@values$originalSynapseId),synGet)
 
 #download the data
+#grabAllEmoryData <- sapply(as.character(emoryTable@values$originalSynapseId),synGet)
 
 #define new names for each new file
-#define parentid for each new file
+
+
 #define annotations for each file
 #define provenance for each file
 #create new file
@@ -45,8 +45,8 @@ emoryTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'Emory%\'
     #remove spaces from caseNumber and proteomicsMS done
 
 
-cleanEmoryClinical <- function(){
-  emoryClinical <- read.csv('Emory//unprocessedEmoryPreliminaryClinical.csv')
+cleanEmoryClinical <- function(x){
+  emoryClinical <- read.csv(x)
   colnames(emoryClinical) <- c('neuropathology','caseNumber','PMI','ageOfOnset','ageAtDeath','durationYr','apoe','race_sex','proteomicsMS')
   emoryClinical$PMI[grep("NA",emoryClinical$PMI)] <- NA
   race_sex <- emoryClinical$race_sex;
@@ -73,7 +73,7 @@ cleanEmoryClinical <- function(){
   emoryClinical$neuropathology[grep('PD',emoryClinical$caseNumber)] <- 'PD'
   return(emoryClinical)
 }
-
+  
 emoryClinicalClean <- cleanEmoryClinical()
 write.csv(emoryClinicalClean,file='Emory//processedEmoryPreliminaryClinical.csv',row.names=FALSE,quote=FALSE)
 
