@@ -44,10 +44,10 @@ metadata$DiseaseStatus[match(alzsamplecolnames, metadata$TID)] <- "Alzheimer's"
 metadata$DiseaseStatus[match(normsamplecolnames, metadata$TID)] <- "Control"
 metadata <- transform(metadata, DiseaseStatus=factor(DiseaseStatus))
 
-mergeddata <- cbind(alzdata[, alzmetacolnames],
-                    alzdata[, alzsamplecolnames],
-                    normdata[, normsamplecolnames])
-colnames(mergeddata) <- gsub("^X", "", colnames(mergeddata))
+# mergeddata <- cbind(alzdata[, alzmetacolnames],
+#                     alzdata[, alzsamplecolnames],
+#                     normdata[, normsamplecolnames])
+# colnames(mergeddata) <- gsub("^X", "", colnames(mergeddata))
 
 consortium <- "AMP-AD"
 study <- "HBTRC"
@@ -80,7 +80,7 @@ o <- synStore(syndatafile)
 dataType <- "metaData"
 extension <- "tsv"
 
-newmetafilename <- paste(paste(consortium, study, center, dataType, sep="_"),
+newmetafilename <- paste(paste(consortium, study, center, platform, dataType, sep="_"),
                          "tsv", sep=".")
 
 write.table(metadata, file=newmetafilename, sep="\t", row.names=FALSE, quote=FALSE)
