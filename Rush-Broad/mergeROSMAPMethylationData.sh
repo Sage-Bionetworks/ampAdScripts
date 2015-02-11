@@ -6,8 +6,6 @@ center="Rush-Broad"
 platform="IlluminaHumanMethylation450"
 other="740_imputed"
 extension="tsv"
-tissueType="Dorsolateral Prefrontal Cortex"
-tissueTypeAbrv="PFC"
 organism="human"
 dataType="Methylation"
 
@@ -34,11 +32,11 @@ LISTINGFILE=ill450kMeth_inputfiles.txt
 NAME="${consortium}_${study}_${center}_${platform}_${other}"
 NEWPARENTID=syn3157275
 usedIds=`cat ${LISTINGFILE} | xargs`
-annotations="'{\"consortium\": \"${consortium}\", \"platform\" : \"${platform}\", \"study\": \"${study}\", \"center\": \"${center}\", \"dataType\": \"${dataType}\", \"organism\": \"${organism}\", \"tissueType\": \"${tissueType}\", \"tissueTypeAbrv\": \"${tissueTypeAbrv}\"}'"
+annotations="'{\"consortium\": \"${consortium}\", \"platform\" : \"${platform}\", \"study\": \"${study}\", \"center\": \"${center}\", \"dataType\": \"${dataType}\", \"organism\": \"${organism}\"}'"
 
 # Current path to commit
 # Not really correct b/c I can't commit and then change...
-thisScript="https://raw.githubusercontent.com/Sage-Bionetworks/ampAdScripts/88317b71c06f3d4f87fbdc7cd4d62ceaf928a702/Rush-Broad/mergeROSMAPMethylationData.sh"
+thisScript="https://github.com/Sage-Bionetworks/ampAdScripts/blob/ab8327eb8f8d28309979b0186be73a216e5bf612/Rush-Broad/mergeROSMAPMethylationData.sh"
 
 # the synapse command does not work properly when run inside the script
 # it may need to be run manually
