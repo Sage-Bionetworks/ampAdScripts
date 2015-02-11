@@ -7,7 +7,7 @@ library(synapseClient)
 library(plyr)
 library(dplyr)
 library(rGithubClient)
-
+library(tools)
 synapseLogin()
 
 ## Get this script
