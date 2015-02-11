@@ -48,10 +48,11 @@ newannotfilename <- paste(paste(consortium, study, center, platform, other, sep=
 
 write.table(mergedAnnot, file=newannotfilename, sep="\t", row.names=FALSE, quote=FALSE)
 
-synannotfile <- File(newannotfilename, parentId="",
+synannotfile <- File(newannotfilename, parentId="syn3157275",
 	             name=paste(consortium, study, center, platform, other, sep="_"))
 
-act <- Activity("Merge files", used=list(resAnnot$id), executed=list(thisScript))
+usedList <- list(
+act <- Activity("Merge files", used=as.list(resAnnot$id), executed=thisScript)
 
 generatedBy(synannotfile) <- act
 synSetAnnotations(synannotfile) <- list(consortium=consortium, study=study, center=center, platform=platform, 
