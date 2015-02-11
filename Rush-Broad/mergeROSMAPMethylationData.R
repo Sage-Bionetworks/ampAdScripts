@@ -39,8 +39,6 @@ center <- "Rush-Broad"
 platform <- "IlluminaHumanMethylation450"
 other <- "metaData"
 extension <- "tsv"
-tissueType <- "Dorsolateral Prefrontal Cortex"
-tissueTypeAbrv <- "PFC"
 organism <- "human"
 
 newannotfilename <- paste(paste(consortium, study, center, platform, other, sep="_"),
@@ -55,6 +53,5 @@ act <- Activity(name="Merge files", used=as.list(resAnnot$id), executed=thisScri
 
 generatedBy(synannotfile) <- act
 synSetAnnotations(synannotfile) <- list(consortium=consortium, study=study, center=center, platform=platform, 
-                                        dataType="metaData", tissueType=tissueType, tissueTypeAbrv=tissueTypeAbrv,
-                                        organism=organism)
+                                        dataType="metaData", organism=organism)
 synannotobj <- synStore(synannotfile)
