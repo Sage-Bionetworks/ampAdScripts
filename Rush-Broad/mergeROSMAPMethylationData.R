@@ -27,6 +27,7 @@ resAnnot <- filter(res, grepl("^ill450kAnno", name))
 
 ## Make merged annotation
 mergedAnnot <- ddply(resAnnot, .(id), readData)
+annotIds <- mergedAnnot$id
 mergedAnnot$id <- NULL
 
 ## sort annotations on chromosome and probe TargetID
@@ -51,7 +52,7 @@ write.table(mergedAnnot, file=newannotfilename, sep="\t", row.names=FALSE, quote
 synannotfile <- File(newannotfilename, parentId="",
 	             name=paste(consortium, study, center, platform, other, sep="_"))
 
-act <- Activity("Merge files", used=list(c(mergedAnnot$id)), executed=list(thisScript))
+act <- Activity("Merge files", used=list(c(annotIds)), executed=list(thisScript))
 
 generatedBy(synannotfile) <- act
 synSetAnnotations(synannotfile) <- list(consortium=consortium, study=study, center=center, platform=platform, 
