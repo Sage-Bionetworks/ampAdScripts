@@ -51,7 +51,6 @@ write.table(mergedAnnot, file=newannotfilename, sep="\t", row.names=FALSE, quote
 synannotfile <- File(newannotfilename, parentId="syn3157275",
 	             name=paste(consortium, study, center, platform, other, sep="_"))
 
-usedList <- list(
 act <- Activity("Merge files", used=as.list(resAnnot$id), executed=thisScript)
 
 generatedBy(synannotfile) <- act
