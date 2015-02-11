@@ -31,16 +31,15 @@ LISTINGFILE=ill450kMeth_inputfiles.txt
 # gzip ${OUTPUTFILE}
 
 # Now, store the file, add annotations and provenance
-NAME="${consortium} ${study} ${center} ${platform} ${other}"
+NAME="${consortium}_${study}_${center}_${platform}_${other}"
 NEWPARENTID=syn3157275
 usedIds=`cat ${LISTINGFILE} | xargs`
 annotations="'{\"consortium\": \"${consortium}\", \"platform\" : \"${platform}\", \"study\": \"${study}\", \"center\": \"${center}\", \"dataType\": \"${dataType}\", \"organism\": \"${organism}\", \"tissueType\": \"${tissueType}\", \"tissueTypeAbrv\": \"${tissueTypeAbrv}\"}'"
 
 # Current path to commit
 # Not really correct b/c I can't commit and then change...
-thisScript="https://raw.githubusercontent.com/Sage-Bionetworks/ampAdScripts/99f780d4d97c2b0d60fc1acca9f9c5a9a4b8f0d2/Rush-Broad/mergeROSMAPMethylationData.sh"
+thisScript="https://raw.githubusercontent.com/Sage-Bionetworks/ampAdScripts/88317b71c06f3d4f87fbdc7cd4d62ceaf928a702/Rush-Broad/mergeROSMAPMethylationData.sh"
 
 # the synapse command does not work properly when run inside the script
 # it may need to be run manually
 echo synapse --debug store ${OUTPUTFILE}.gz --parentId ${NEWPARENTID} --name \"${NAME}\" --used ${usedIds} --executed ${thisScript} --annotations ${annotations}
-synapse --debug store ${OUTPUTFILE}.gz --parentId ${NEWPARENTID} --name \"${NAME}\" --used ${usedIds} --executed \"${thisScript}\" --annotations ${annotations}

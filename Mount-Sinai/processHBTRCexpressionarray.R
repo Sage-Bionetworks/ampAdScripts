@@ -55,7 +55,7 @@ center <- "MSSM"
 platform <- "IlluminaHumanHap650Y"
 other <- "PFC_AgeCorrected_all"
 extension <- "tsv"
-disease <- c("Alzheimer’s Disease", "Control")
+disease <- c("Alzheimer's Disease", "Control")
 organism <- "human"
 dataType <- "DNA"
 
@@ -66,7 +66,7 @@ newdatafilename <- paste(paste(consortium, study, center, platform, other, sep="
 write.table(mergeddata, file=newdatafilename, sep="\t", row.names=FALSE, quote=FALSE)
 
 syndatafile <- File(newdatafilename, parentId="syn3157688",
-                name=paste(consortium, study, center, platform, other))
+                name=paste(consortium, study, center, platform, other, sep="_"))
 
 act <- Activity(name="Merge files", used=list(alzfile, normfile), executed=thisScript)
 generatedBy(syndatafile) <- act
@@ -86,7 +86,7 @@ newmetafilename <- paste(paste(consortium, study, center, platform, dataType, se
 write.table(metadata, file=newmetafilename, sep="\t", row.names=FALSE, quote=FALSE)
 
 synmetafile <- File(newmetafilename, parentId="syn3157691",
-                name=paste(consortium, study, center, platform, dataType))
+                name=paste(consortium, study, center, platform, dataType, sep="_"))
 
 act <- Activity(name="Add disease status column", used=list(metafile, alzfile, normfile), executed=list(thisScript))
 generatedBy(synmetafile) <- act

@@ -33,22 +33,28 @@ mergedAnnot$id <- NULL
 mergedAnnot <- arrange(mergedAnnot, CHR, TargetID)
 
 ## Write merged annotation
+consortium <- "AMP-AD"
 study <- "ROSMAP"
 center <- "Rush-Broad"
-platform <- "HumanMethylation450"
+platform <- "IlluminaHumanMethylation450"
 other <- "metaData"
 extension <- "tsv"
+tissueType <- "Dorsolateral Prefrontal Cortex"
+tissueTypeAbrv <- "PFC"
+organism <- "human"
 
-newannotfilename <- paste(paste(study, center, platform, other, sep="_"),
+newannotfilename <- paste(paste(consortium, study, center, platform, other, sep="_"),
                           "tsv", sep=".")
 
 write.table(mergedAnnot, file=newannotfilename, sep="\t", row.names=FALSE, quote=FALSE)
 
-synannotfile <- File(newannotfilename, parentId="",
-	             name=paste(study, center, platform, other))
+synannotfile <- File(newannotfilename, parentId="syn3157275",
+	             name=paste(consortium, study, center, platform, other, sep="_"))
 
-act <- Activity("Merge files", used=list(c(mergedAnnot$id)), executed=list(thisScript))
+act <- Activity(name="Merge files", used=as.list(resAnnot$id), executed=thisScript)
 
 generatedBy(synannotfile) <- act
-
+synSetAnnotations(synannotfile) <- list(consortium=consortium, study=study, center=center, platform=platform, 
+                                        dataType="metaData", tissueType=tissueType, tissueTypeAbrv=tissueTypeAbrv,
+                                        organism=organism)
 synannotobj <- synStore(synannotfile)
