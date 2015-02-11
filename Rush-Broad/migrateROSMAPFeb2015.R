@@ -1,4 +1,3 @@
-
 require(synapseClient)
 synapseLogin()
 
