@@ -64,13 +64,14 @@ migrateData <- function(i,emoryTable,fileTypes){
       b <- b[-nrow(b),]
       b <- cleanEmoryClinical(b)
       write.csv(b,file='~/AMP-AD_Emory_Emory_Clinical.csv',row.names=FALSE)
-      b <- File('~/AMP-AD_Emory_Emory_Clinical.csv',parentId=emoryTable@values$newParentId[i])
+      b <- File('~/AMP-AD_Emory_Emory_Clinical.csv',parentId=emoryTable@values$newParentId[i],name='Emory_Emory_Clinical')
+      
       clinicalAnnotation <- list(
         dataType = 'metaData',
         tissueType = 'Medial Frontal Gyrus',
         center = 'Emory',
         study = 'Emory',
-        fileType = 'csv'
+        fileType = 'csv',
         organism = 'human'
       )
       synSetAnnotations(b) <- clinicalAnnotation
@@ -125,7 +126,9 @@ migrateData <- function(i,emoryTable,fileTypes){
         organism = 'human'
       )
       synSetAnnotations(b) <- rawAnnotation
-      act <- Activity(name='Emory Raw Data Migration',used=list(list(entity=emoryTable@values$originalSynapseId[i],wasExecuted=F)),executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Emory/migrateEmoryFeb2015.R"))
+      act <- Activity(name='Emory Raw Data Migration',
+                      used=list(list(entity=emoryTable@values$originalSynapseId[i],wasExecuted=F)),
+                      executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Emory/migrateEmoryFeb2015.R"))
       act <- storeEntity(act)
       generatedBy(b) <- act
       b <- synStore(b)
@@ -149,6 +152,7 @@ migrateData <- function(i,emoryTable,fileTypes){
 fileTypes <- extractFileType(emoryTable@values$oldFileName)
 for (i in 1:nrow(emoryTable@values)){
   #
+  
 }
 
 
