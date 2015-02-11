@@ -72,6 +72,9 @@ migrateData <- function(i,emoryTable,fileTypes){
         fileType = 'csv'
       )
       synSetAnnotations(b) <- clinicalAnnotation
+      act <- Activity(name='Emory Clinical Reprocessing',used=list(list(entity=emoryTable@values$originalSynapseId[i],wasExecuted=F)),executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Emory/migrateEmoryFeb2015.R"))
+      act <- storeEntity(act)
+      generatedBy(b) <- act
       b <- synStore(b)
       
       #add provenance
