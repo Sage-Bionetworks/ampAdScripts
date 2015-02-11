@@ -52,6 +52,7 @@ cleanEmoryClinical <- function(emoryClinical){
   return(emoryClinical)
 }
 
+cleanSpectralData
 
 migrateData <- function(i,emoryTable,fileTypes){
     require(gdata)
@@ -94,6 +95,7 @@ migrateData <- function(i,emoryTable,fileTypes){
       poolType <- strsplit(strsplit(emoryTable@values$oldFileName[i],'Emory')[[1]][2],'Pools')[[1]][1]
       newFileName <- 'AMP-AD_Emory_Emory_LTQOrbitrapXL_'
       newFileName<-paste(newFileName,poolType,'.7z',sep='')
+      newEntityName <- paste('Emory_Emory_LTQOrbitrapXL_',poolType,sep='')
       if (poolType == 'ADPD'){
        diseaseType <- 'Autosomal Dominant Parkinsons Disease'
       }else if (poolType == 'AD'){
@@ -114,7 +116,7 @@ migrateData <- function(i,emoryTable,fileTypes){
       
       #copy file to ??
       system(paste('cp ',a@filePath,' ~/',newFileName,sep=''))
-      b <- File(paste('~/',newFileName,sep=''),parentId=emoryTable@values$newParentId[i])
+      b <- File(paste('~/',newFileName,sep=''),parentId=emoryTable@values$newParentId[i],name=newEntityName)
       rawAnnotation <- list(
         dataType = 'metaData',
         disease = diseaseType,
@@ -142,6 +144,17 @@ migrateData <- function(i,emoryTable,fileTypes){
       #add provenance
       #update table
     }else if (fileTypes[i]=='txt'){
+      if(length(grep('Protein',a@filePath))==1){
+        newFileName <- 'AMP-AD_Emory_Emory_Protein.tsv'
+        newEntityName <- 'Emory_Emory_Protein'
+      }else if (length(grep('Spectral',a@filePath))==1){
+        newFileName <- 'AMP-AD_Emory_Emory_SpectralIdentification.tsv'
+        newEntityName <- 'Emory_Emory_SpectralIdentification'
+        cleanSpectralData()
+      } else {
+        stop('error\n')
+      }
+      system(paste('cp ',a@filePath,' ~/',newFileName,sep=''))
       
     }else if (fileTypes[i]=='fasta'){
       
@@ -151,7 +164,7 @@ migrateData <- function(i,emoryTable,fileTypes){
 }
 fileTypes <- extractFileType(emoryTable@values$oldFileName)
 for (i in 1:nrow(emoryTable@values)){
-  #
+  
   
 }
 
