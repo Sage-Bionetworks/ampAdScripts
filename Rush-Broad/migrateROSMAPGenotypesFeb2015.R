@@ -19,7 +19,7 @@ makeFile <- function(i,a,newEntityName,newFileName,rosmapTable){
   b <- File(newFileName,parentId=rosmapTable@values$newParentId[i],name=paste0(newEntityName,'_',fileType))
   dataAnnotation <- list(
     dataType = 'DNA',
-    disease = c('Alzheimers Disease','Control')
+    disease = c('Alzheimers Disease','Control'),
     platform = 'Affymetrix Genechip 6.0',
     center = 'Rush-Broad',
     study = 'ROSMAP',
