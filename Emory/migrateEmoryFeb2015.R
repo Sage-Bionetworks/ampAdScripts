@@ -123,7 +123,7 @@ migrateData <- function(i,emoryTable,fileTypes){
       rawAnnotation <- list(
         dataType = 'metaData',
         disease = diseaseType,
-        platform = 'LTQOrbitrapXL'
+        platform = 'LTQOrbitrapXL',
         tissueType = 'Medial Frontal Gyrus',
         center = 'Emory',
         study = 'Emory',
