@@ -12,11 +12,7 @@
 #platform = LTQOrbitrapXL
 #extension = 7z, txt, fasta
 
-require(synapseClient)
-synapseLogin()
 
-##query master table for emory files
-emoryTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'Emory%\'',loadResult = TRUE)
 
 extractFileType <- function(x){
   return(sapply(strsplit(x,'\\.'), function(x) x)[2,])
@@ -52,7 +48,10 @@ cleanEmoryClinical <- function(emoryClinical){
   return(emoryClinical)
 }
 
-cleanSpectralData
+cleanSpectralData <- function(a,newFileName){
+  str <- paste('sed "s/;/,/g" ',a@filePath,' > ~/',newFileName,sep='')
+  system(str)
+}
 
 migrateData <- function(i,emoryTable,fileTypes){
     require(gdata)
@@ -85,6 +84,10 @@ migrateData <- function(i,emoryTable,fileTypes){
       #add annotations
       #update migration table
       emoryTable@values$newSynapseId[i] <- b$properties$id
+      wind <- is.na(emoryTable@values$newSynapseId)
+      if(sum(wind)>0){
+        emoryTable@values$newSynapseId[wind] <- ''
+      }
       emoryTable@values$newFileName[i] <- b$properties$name
       emoryTable@values$isMigrated[i] <- TRUE
       emoryTable@values$hasAnnotation[i] <- TRUE
@@ -135,6 +138,10 @@ migrateData <- function(i,emoryTable,fileTypes){
       generatedBy(b) <- act
       b <- synStore(b)
       emoryTable@values$newSynapseId[i] <- b$properties$id
+      wind <- is.na(emoryTable@values$newSynapseId)
+      if(sum(wind)>0){
+        emoryTable@values$newSynapseId[wind] <- ''
+      }
       emoryTable@values$newFileName[i] <- b$properties$name
       emoryTable@values$isMigrated[i] <- TRUE
       emoryTable@values$hasAnnotation[i] <- TRUE
@@ -147,84 +154,108 @@ migrateData <- function(i,emoryTable,fileTypes){
       if(length(grep('Protein',a@filePath))==1){
         newFileName <- 'AMP-AD_Emory_Emory_Protein.tsv'
         newEntityName <- 'Emory_Emory_Protein'
+        system(paste('cp ',a@filePath,' ~/',newFileName,sep=''))
+        b <- File(paste('~/',newFileName,sep=''),parentId=emoryTable@values$newParentId[i],name=newEntityName)
+        processedAnnotation <- list(
+          dataType = 'Protein',
+          disease = c('Autosomal Dominant Parkinsons Disease','Alzheimers Disease','Amyotrophic Lateral Sclerosis','Corticobasal Degeneration','Control','Frontotemporal Dementia','Mild Cognitive Impairment','Parkinsons Disease'),
+          platform = 'LTQOrbitrapXL'
+          tissueType = 'Medial Frontal Gyrus',
+          center = 'Emory',
+          study = 'Emory',
+          fileType = 'csv'
+          organism = 'human'
+        )
+        synSetAnnotations(b) <- rawAnnotation
+        act <- Activity(name='Emory Raw Data Migration',
+                        used=list(list(entity=emoryTable@values$originalSynapseId[i],wasExecuted=F)),
+                        executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Emory/migrateEmoryFeb2015.R"))
+        act <- storeEntity(act)
+        generatedBy(b) <- act
+        b <- synStore(b)
+        emoryTable@values$newSynapseId[i] <- b$properties$id
+        wind <- is.na(emoryTable@values$newSynapseId)
+        if(sum(wind)>0){
+          emoryTable@values$newSynapseId[wind] <- ''
+        }
+        emoryTable@values$newFileName[i] <- b$properties$name
+        emoryTable@values$isMigrated[i] <- TRUE
+        emoryTable@values$hasAnnotation[i] <- TRUE
+        emoryTable@values$hasProvenance[i] <- TRUE
+        emoryTable <- synStore(emoryTable)  
       }else if (length(grep('Spectral',a@filePath))==1){
-        newFileName <- 'AMP-AD_Emory_Emory_SpectralIdentification.tsv'
+        newFileName <- 'AMP-AD_Emory_Emory_SpectralIdentification.csv'
         newEntityName <- 'Emory_Emory_SpectralIdentification'
-        cleanSpectralData()
+        cleanSpectralData(a,newFileName)
+        b <- File(paste('~/',newFileName,sep=''),parentId=emoryTable@values$newParentId[i],name=newEntityName)
+        processedAnnotation <- list(
+          dataType = 'Protein',
+          disease = c('Autosomal Dominant Parkinsons Disease','Alzheimers Disease','Amyotrophic Lateral Sclerosis','Corticobasal Degeneration','Control','Frontotemporal Dementia','Mild Cognitive Impairment','Parkinsons Disease'),
+          platform = 'LTQOrbitrapXL',
+          tissueType = 'Medial Frontal Gyrus',
+          center = 'Emory',
+          study = 'Emory',
+          fileType = 'tsv',
+          organism = 'human'
+        )
+        synSetAnnotations(b) <- processedAnnotation
+        act <- Activity(name='Emory Processed Data Migration',
+                        used=list(list(entity=emoryTable@values$originalSynapseId[i],wasExecuted=F)),
+                        executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Emory/migrateEmoryFeb2015.R"))
+        act <- storeEntity(act)
+        generatedBy(b) <- act
+        b <- synStore(b)
+        emoryTable@values$newSynapseId[i] <- b$properties$id
+        emoryTable@values$newFileName[i] <- b$properties$name
+        emoryTable@values$isMigrated[i] <- TRUE
+        emoryTable@values$hasAnnotation[i] <- TRUE
+        emoryTable@values$hasProvenance[i] <- TRUE
+        emoryTable <- synStore(emoryTable)  
       } else {
         stop('error\n')
       }
-      system(paste('cp ',a@filePath,' ~/',newFileName,sep=''))
       
     }else if (fileTypes[i]=='fasta'){
-      
+      newFileName <- 'AMP-AD_Emory_Emory_RefSeq.fasta'
+      newEntityName <- 'Emory_Emory_RefSeq'
+      system(paste('cp ',a@filePath,' ~/',newFileName,sep=''))
+      b <- File(paste('~/',newFileName,sep=''),parentId=emoryTable@values$newParentId[i],name=newEntityName)
+      refAnnotation <- list(
+        dataType = 'referenceData',
+        fileType = 'fasta',
+        organism = 'human'
+      )
+      synSetAnnotations(b) <- refAnnotation
+      act <- Activity(name='Emory Reference Data Migration',
+                      used=list(list(entity=emoryTable@values$originalSynapseId[i],wasExecuted=F)),
+                      executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Emory/migrateEmoryFeb2015.R"))
+      act <- storeEntity(act)
+      generatedBy(b) <- act
+      b <- synStore(b)
+      emoryTable@values$newSynapseId[i] <- b$properties$id
+      wind <- is.na(emoryTable@values$newSynapseId)
+      if(sum(wind)>0){
+        emoryTable@values$newSynapseId[wind] <- ''
+      }
+      emoryTable@values$newFileName[i] <- b$properties$name
+      emoryTable@values$isMigrated[i] <- TRUE
+      emoryTable@values$hasAnnotation[i] <- TRUE
+      emoryTable@values$hasProvenance[i] <- TRUE
+      emoryTable <- synStore(emoryTable)  
     } else{
-      
+      stop('error\n')
     }
 }
+
+require(synapseClient)
+synapseLogin()
+emoryTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'Emory%\'',loadResult = TRUE)
 fileTypes <- extractFileType(emoryTable@values$oldFileName)
+
 for (i in 1:nrow(emoryTable@values)){
-  
-  
+  migrateData(i,emoryTable,fileTypes)
+  emoryTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'Emory%\'',loadResult = TRUE)
 }
 
 
-#download the data
-#grabAllEmoryData <- sapply(as.character(emoryTable@values$originalSynapseId),synGet)
-
-#define new names for each new file
-
-
-#define annotations for each file
-#define provenance for each file
-#create new file
-#upload file to new location with provenance
-#update progress table with new parentid, new name, provenance, etc...
-
-####SCRATCH
-#clinical <- synGet(emoryTable@values$originalSynapseId[12])
-#str <- paste('cp ',clinical@filePath,' ~/')
-#system(str)
-
-#clean up clinical file done
-  #write function to clean up clinical file done
-    #rename columns done
-    #fix NAs done
-    #split race and sex column into two columns done
-    #fill in neuropath information done
-    #replace '/' with E in apoe done
-    #remove spaces from caseNumber and proteomicsMS done
-
-
-  
-emoryClinicalClean <- cleanEmoryClinical()
-write.csv(emoryClinicalClean,file='Emory//processedEmoryPreliminaryClinical.csv',row.names=FALSE,quote=FALSE)
-
-#move clinical to Table in staging
-
-#tcresult<-as.tableColumns(emoryClinicalClean)
-#cols<-tcresult$tableColumns
-#fileHandleId<-tcresult$fileHandleId
-
-#projectId<-'syn2580853'
-#need to add appropriate acl!
-#schema<-TableSchema(name="AMPAD_Emory_Emory_Clinical", parent=projectId, columns=cols)
-#table<-Table(schema, fileHandleId)
-#table<-synStore(table, retrieveData=TRUE)
-
-
-  #change file name
-  #add provenance
-  #add annotations
-
-#move clinical to csv in staging
-
-
-####move raw count files
-
-
-####move refseq mapped files
-
-
-####move reference genome file
 
