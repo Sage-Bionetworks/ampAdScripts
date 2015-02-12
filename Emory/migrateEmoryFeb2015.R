@@ -127,7 +127,7 @@ migrateData <- function(i,emoryTable,fileTypes){
         tissueType = 'Medial Frontal Gyrus',
         center = 'Emory',
         study = 'Emory',
-        fileType = '7z'
+        fileType = '7z',
         organism = 'human'
       )
       synSetAnnotations(b) <- rawAnnotation
