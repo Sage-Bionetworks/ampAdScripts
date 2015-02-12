@@ -52,12 +52,14 @@ colnames(mergeddata) <- gsub("^X", "", colnames(mergeddata))
 consortium <- "AMP-AD"
 study <- "HBTRC"
 center <- "MSSM"
-platform <- "IlluminaHumanHap650Y"
+platform <- "Agilent44Karray"
 other <- "PFC_AgeCorrected_all"
 extension <- "tsv"
 disease <- c("Alzheimer's Disease", "Control")
 organism <- "human"
-dataType <- "DNA"
+dataType <- "mRNA"
+tissueType <- "Dorsolateral Prefrontal Cortex"
+tissueTypeAbrv <- "PFC"
 
 ## write data
 newdatafilename <- paste(paste(consortium, study, center, platform, other, sep="_"),
@@ -72,7 +74,8 @@ act <- Activity(name="Merge files", used=list(alzfile, normfile), executed=thisS
 generatedBy(syndatafile) <- act
 
 synSetAnnotations(syndatafile) <- list(consortium=consortium, study=study, center=center, platform=platform, 
-                                       dataType=dataType, organism=organism, disease=disease)
+                                       dataType=dataType, organism=organism, disease=disease, tissueType=tissueType,
+                                       tissueTypeAbrv=tissueTypeAbrv)
 
 o <- synStore(syndatafile)
 
@@ -92,6 +95,7 @@ act <- Activity(name="Add disease status column", used=list(metafile, alzfile, n
 generatedBy(synmetafile) <- act
 
 synSetAnnotations(synmetafile) <- list(consortium=consortium, study=study, center=center, platform=platform, 
-                                       dataType="metaData", organism=organism, disease=disease)
+                                       dataType="metaData", organism=organism, disease=disease, tissueTypeAbrv=tissueTypeAbrv,
+                                       tissueType=tissueType)
 
 o <- synStore(synmetafile)
