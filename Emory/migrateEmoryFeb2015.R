@@ -159,16 +159,16 @@ migrateData <- function(i,emoryTable,fileTypes){
         processedAnnotation <- list(
           dataType = 'Protein',
           disease = c('Autosomal Dominant Parkinsons Disease','Alzheimers Disease','Amyotrophic Lateral Sclerosis','Corticobasal Degeneration','Control','Frontotemporal Dementia','Mild Cognitive Impairment','Parkinsons Disease'),
-          platform = 'LTQOrbitrapXL'
+          platform = 'LTQOrbitrapXL',
           tissueType = 'Medial Frontal Gyrus',
           center = 'Emory',
           study = 'Emory',
-          fileType = 'csv'
+          fileType = 'tsv',
           organism = 'human'
         )
-        synSetAnnotations(b) <- rawAnnotation
-        act <- Activity(name='Emory Raw Data Migration',
-                        used=list(list(entity=emoryTable@values$originalSynapseId[i],wasExecuted=F)),
+        synSetAnnotations(b) <- processedAnnotation
+        act <- Activity(name='Emory Processed Data Migration',
+                        used=as.list(c(emoryTable@values$originalSynapseId[i],(emoryTable@values$originalSynapseId[grep('7z',emoryTable@values$oldFileName)]),(emoryTable@values$originalSynapseId[grep('fasta',emoryTable@values$oldFileName)]))),
                         executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Emory/migrateEmoryFeb2015.R"))
         act <- storeEntity(act)
         generatedBy(b) <- act
@@ -195,12 +195,12 @@ migrateData <- function(i,emoryTable,fileTypes){
           tissueType = 'Medial Frontal Gyrus',
           center = 'Emory',
           study = 'Emory',
-          fileType = 'tsv',
+          fileType = 'csv',
           organism = 'human'
         )
         synSetAnnotations(b) <- processedAnnotation
         act <- Activity(name='Emory Processed Data Migration',
-                        used=list(list(entity=emoryTable@values$originalSynapseId[i],wasExecuted=F)),
+                        used=as.list(c(emoryTable@values$originalSynapseId[i],(emoryTable@values$originalSynapseId[grep('7z',emoryTable@values$oldFileName)]),(emoryTable@values$originalSynapseId[grep('fasta',emoryTable@values$oldFileName)]))),
                         executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Emory/migrateEmoryFeb2015.R"))
         act <- storeEntity(act)
         generatedBy(b) <- act
