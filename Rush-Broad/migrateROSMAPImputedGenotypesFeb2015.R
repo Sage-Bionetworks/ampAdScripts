@@ -25,20 +25,22 @@ makeFile <- function(i,a,newEntityName,newFileName,rosmapTable){
   fileType <- foo[length(foo)]
   if(fileType == 'gz'){
     newFileName <- paste0(newFileName,'_',foo[1],'_Group',foo[3],'.',fileType)
-    b <- File(newFileName,parentId=rosmapTable@values$newParentId[i],name=paste0(newFileName,'_',foo[1],'_Group',foo[3],'_',fileType))
+    b <- File(newFileName,parentId=rosmapTable@values$newParentId[i],name=paste0(newEntityName,'_',foo[1],'_Group',foo[3],'_',fileType))
     dataAnnotation <- list(
       dataType = 'DNA',
       disease = c('Alzheimers Disease','Control'),
       platform = 'Affymetrix Genechip 6.0',
       center = 'Rush-Broad',
       study = 'ROSMAP',
-      fileType = 'plink',
-      organism = 'human'
+      fileType = 'dosage',
+      organism = 'human',
+      dataSubType = 'imputedGenotypes',
+      imputationReference = 'HapMap3'
     )
     synSetAnnotations(b) <- dataAnnotation
-    act <- Activity(name='ROSMAP Genotype Migration',
+    act <- Activity(name='ROSMAP Imputed Genotype Migration',
                     used=list(list(entity=rosmapTable@values$originalSynapseId[i],wasExecuted=F)),
-                    executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Rush-Broad/migrateROSMAPGenotypesFeb2015.R"))
+                    executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Rush-Broad/migrateROSMAPImputedGenotypesFeb2015.R"))
     act <- storeEntity(act)
     generatedBy(b) <- act
     b <- synStore(b)
@@ -62,13 +64,15 @@ makeFile <- function(i,a,newEntityName,newFileName,rosmapTable){
       platform = 'Affymetrix Genechip 6.0',
       center = 'Rush-Broad',
       study = 'ROSMAP',
-      fileType = 'plink',
-      organism = 'human'
+      fileType = 'fam',
+      organism = 'human',
+      dataSubType = 'imputedGenotypes',
+      imputationReference = 'HapMap3'      
     )
     synSetAnnotations(b) <- dataAnnotation
-    act <- Activity(name='ROSMAP Genotype Migration',
+    act <- Activity(name='ROSMAP Imputed Genotype Migration',
                     used=list(list(entity=rosmapTable@values$originalSynapseId[i],wasExecuted=F)),
-                    executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Rush-Broad/migrateROSMAPGenotypesFeb2015.R"))
+                    executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Rush-Broad/migrateROSMAPImputedGenotypesFeb2015.R"))
     act <- storeEntity(act)
     generatedBy(b) <- act
     b <- synStore(b)
@@ -92,13 +96,15 @@ makeFile <- function(i,a,newEntityName,newFileName,rosmapTable){
       platform = 'Affymetrix Genechip 6.0',
       center = 'Rush-Broad',
       study = 'ROSMAP',
-      fileType = 'plink',
-      organism = 'human'
+      fileType = 'fam',
+      organism = 'human',
+      dataSubType = 'imputedGenotypes',
+      imputationReference = 'HapMap3'      
     )
     synSetAnnotations(b) <- dataAnnotation
-    act <- Activity(name='ROSMAP Genotype Migration',
+    act <- Activity(name='ROSMAP Imputed Genotype Migration',
                     used=list(list(entity=rosmapTable@values$originalSynapseId[i],wasExecuted=F)),
-                    executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Rush-Broad/migrateROSMAPGenotypesFeb2015.R"))
+                    executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Rush-Broad/migrateROSMAPImputedGenotypesFeb2015.R"))
     act <- storeEntity(act)
     generatedBy(b) <- act
     b <- synStore(b)
