@@ -49,7 +49,7 @@ cleanEmoryClinical <- function(emoryClinical){
 }
 
 cleanSpectralData <- function(a,newFileName){
-  str <- paste('sed "s/;/,/g" ',a@filePath,' > ~/',newFileName,sep='')
+  str <- paste('sed "s/;/,/g" ',a@filePath,' > ',newFileName,sep='')
   system(str)
 }
 
@@ -63,8 +63,8 @@ migrateData <- function(i,emoryTable,fileTypes){
       b <- b[-1,]
       b <- b[-nrow(b),]
       b <- cleanEmoryClinical(b)
-      write.csv(b,file='~/AMP-AD_Emory_Emory_Clinical.csv',row.names=FALSE)
-      b <- File('~/AMP-AD_Emory_Emory_Clinical.csv',parentId=emoryTable@values$newParentId[i],name='Emory_Emory_Clinical')
+      write.csv(b,file='AMP-AD_Emory_Emory_Clinical.csv',row.names=FALSE)
+      b <- File('AMP-AD_Emory_Emory_Clinical.csv',parentId=emoryTable@values$newParentId[i],name='Emory_Emory_Clinical')
       
       clinicalAnnotation <- list(
         dataType = 'metaData',
@@ -118,8 +118,8 @@ migrateData <- function(i,emoryTable,fileTypes){
       }
       
       #copy file to ??
-      system(paste('cp ',a@filePath,' ~/',newFileName,sep=''))
-      b <- File(paste('~/',newFileName,sep=''),parentId=emoryTable@values$newParentId[i],name=newEntityName)
+      system(paste('cp ',a@filePath,' ',newFileName,sep=''))
+      b <- File(paste('',newFileName,sep=''),parentId=emoryTable@values$newParentId[i],name=newEntityName)
       rawAnnotation <- list(
         dataType = 'metaData',
         disease = diseaseType,
@@ -154,8 +154,8 @@ migrateData <- function(i,emoryTable,fileTypes){
       if(length(grep('Protein',a@filePath))==1){
         newFileName <- 'AMP-AD_Emory_Emory_Protein.tsv'
         newEntityName <- 'Emory_Emory_Protein'
-        system(paste('cp ',a@filePath,' ~/',newFileName,sep=''))
-        b <- File(paste('~/',newFileName,sep=''),parentId=emoryTable@values$newParentId[i],name=newEntityName)
+        system(paste('cp ',a@filePath,' ',newFileName,sep=''))
+        b <- File(paste('',newFileName,sep=''),parentId=emoryTable@values$newParentId[i],name=newEntityName)
         processedAnnotation <- list(
           dataType = 'Protein',
           disease = c('Autosomal Dominant Parkinsons Disease','Alzheimers Disease','Amyotrophic Lateral Sclerosis','Corticobasal Degeneration','Control','Frontotemporal Dementia','Mild Cognitive Impairment','Parkinsons Disease'),
@@ -187,7 +187,7 @@ migrateData <- function(i,emoryTable,fileTypes){
         newFileName <- 'AMP-AD_Emory_Emory_SpectralIdentification.csv'
         newEntityName <- 'Emory_Emory_SpectralIdentification'
         cleanSpectralData(a,newFileName)
-        b <- File(paste('~/',newFileName,sep=''),parentId=emoryTable@values$newParentId[i],name=newEntityName)
+        b <- File(paste('',newFileName,sep=''),parentId=emoryTable@values$newParentId[i],name=newEntityName)
         processedAnnotation <- list(
           dataType = 'Protein',
           disease = c('Autosomal Dominant Parkinsons Disease','Alzheimers Disease','Amyotrophic Lateral Sclerosis','Corticobasal Degeneration','Control','Frontotemporal Dementia','Mild Cognitive Impairment','Parkinsons Disease'),
@@ -218,8 +218,8 @@ migrateData <- function(i,emoryTable,fileTypes){
     }else if (fileTypes[i]=='fasta'){
       newFileName <- 'AMP-AD_Emory_Emory_RefSeq.fasta'
       newEntityName <- 'Emory_Emory_RefSeq'
-      system(paste('cp ',a@filePath,' ~/',newFileName,sep=''))
-      b <- File(paste('~/',newFileName,sep=''),parentId=emoryTable@values$newParentId[i],name=newEntityName)
+      system(paste('cp ',a@filePath,' ',newFileName,sep=''))
+      b <- File(paste('',newFileName,sep=''),parentId=emoryTable@values$newParentId[i],name=newEntityName)
       refAnnotation <- list(
         dataType = 'referenceData',
         fileType = 'fasta',
