@@ -61,10 +61,9 @@ newAnnotations <- list(consortium=consortium, study=study, center=center, platfo
                        dataType=dataType, organism=organism, disease=disease)
 
 copyFile <- function(o, newParentId, newName, newAnnotations) {
-  # o <- synGet(synId)
   extension  <- file_ext(o@filePath)
   newFilename <- paste(newName, extension, sep=".")
-  newFilePath <- paste("/tmp/", newFilename)
+  newFilePath <- paste("/tmp/", newFilename, sep="")
   file.copy(o@filePath, newFilePath)
   newo <- File(newFilePath, name=newFilename, parentId=newParentId)
   
@@ -73,8 +72,18 @@ copyFile <- function(o, newParentId, newName, newAnnotations) {
   
   synSetAnnotations(newo) <- list(consortium=consortium, study=study, center=center, platform=platform, 
                                   dataType=dataType, organism=organism, disease=disease)
-    
-  newo
+  
+  newo <- synStore(newo)
 }
 
 newobjs <- llply(synobjs, copyFile, newParentId=newParentId, newName=newName, newAnnotations=newAnnotations)
+
+res@values$newParentId <- newParentId
+res@values$isMigrated <- TRUE
+res@values$hasAnnotation <- TRUE
+res@values$hasProvenance <- TRUE
+
+res@values$newSynapseId <- laply(newobjs, function(x) x@properties$id)
+res@values$newFileName <- laply(newobjs, function(x) basename(x@filePath))
+
+synStore(res)
