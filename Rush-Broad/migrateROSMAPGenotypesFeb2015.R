@@ -14,6 +14,7 @@ moveGeno <- function(i,a,newFileName,rosmapTable){
 }
 
 makeFile <- function(i,a,newEntityName,newFileName,rosmapTable){
+  rosmapTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'ROSMAP Genotypes%\' and migrator=\'Ben\' and toBeMigrated=TRUE',loadResult = TRUE)
   fileType <- strsplit(rosmapTable@values$oldFileName[i],'\\.')[[1]][4]
   newFileName <- paste0(newFileName,'.',fileType)
   b <- File(newFileName,parentId=rosmapTable@values$newParentId[i],name=paste0(newEntityName,'_',fileType))
@@ -38,7 +39,7 @@ makeFile <- function(i,a,newEntityName,newFileName,rosmapTable){
   if(sum(wind)>0){
     rosmapTable@values$newSynapseId[wind] <- ''
   }
-  rosmapTable@values$newFileName[i] <- b$properties$name
+  rosmapTable@values$newFileName[i] <- newFileName
   rosmapTable@values$isMigrated[i] <- TRUE
   rosmapTable@values$hasAnnotation[i] <- TRUE
   rosmapTable@values$hasProvenance[i] <- TRUE
@@ -50,6 +51,7 @@ migrateGenotype <- function(){
   synList <- sapply(rosmapTable@values$originalSynapseId,synGet)
   newFileName <- 'AMP-AD_ROSMAP_Rush-Broad_AffymetrixGenechip6'
   newEntityName <- 'ROSMAP_Rush-Broad_AffymetrixGenechip6'
-  sapply(1:nrow(rosmapTable),moveGeno,synList,newFileName,rosmapTable)
-  sapply(1:nrow(rosmapTable),makeFile,synList,newEntityName,newFileName,rosmapTable)
+  sapply(1:nrow(rosmapTable@values),moveGeno,synList,newFileName,rosmapTable)
+  sapply(1:nrow(rosmapTable@values),makeFile,synList,newEntityName,newFileName,rosmapTable)
 }
+migrateGenotype()
