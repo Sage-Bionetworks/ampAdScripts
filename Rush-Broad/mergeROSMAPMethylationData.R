@@ -55,3 +55,28 @@ generatedBy(synannotfile) <- act
 synSetAnnotations(synannotfile) <- list(consortium=consortium, study=study, center=center, platform=platform, 
                                         dataType="metaData", organism=organism)
 synannotobj <- synStore(synannotfile)
+
+
+## Update the master table
+# masterTable <- synGet("syn3163713")
+# parentId <- "syn2701448"
+# q  <- paste("select * from ", masterTable@properties$id, 
+#             " where originalParentId='", parentId, "' AND oldFileName LIKE 'ill450kAnno%'", sep="")
+# res <- synTableQuery(q)
+# 
+# res@values$newSynapseId <- "syn3168775"
+# res@values$isMigrated <- TRUE
+# res@values$hasAnnotation <- TRUE
+# res@values$hasProvenance <- TRUE
+# synStore(res)
+# 
+# q  <- paste("select * from ", masterTable@properties$id, 
+#             " where originalParentId='", parentId, "' AND oldFileName LIKE 'ill450kMeth%'", sep="")
+# 
+# res <- synTableQuery(q)
+# 
+# res@values$newSynapseId <- "syn3168763"
+# res@values$isMigrated <- TRUE
+# res@values$hasAnnotation <- TRUE
+# res@values$hasProvenance <- TRUE
+# synStore(res)
