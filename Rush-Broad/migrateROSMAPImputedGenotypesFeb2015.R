@@ -123,9 +123,24 @@ makeFile <- function(i,a,newEntityName,newFileName,rosmapTable){
 
 }
 
+robustBatchSynGet <- function(syn){
+  res <- NA
+  try(res <- synGet(syn),silent = TRUE)
+  return(res)
+}
+
 migrateImputedGenotype <- function(){
   rosmapTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'ROSMAP Imputed Genotypes%\' and migrator=\'Ben\' and toBeMigrated=TRUE',loadResult = TRUE)
-  synList <- sapply(rosmapTable@values$originalSynapseId,synGet)
+  synList <- sapply(rosmapTable@values$originalSynapseId,robustBatchSynGet)
+  getFalse <- sapply(synList,function(x) is.na(x));
+  while(sum(getFalse)>0){
+    wf <- which(getFalse)
+    for (i in 1:length(wf)){
+      synList[[wf[i]]] <- robustBatchSynGet(rosmapTable@values$originalSynapseId[wf[i]])
+    }
+    getFalse <- sapply(synList,function(x) is.na(x))
+  }
+  
   newFileName <- 'AMP-AD_ROSMAP_Rush-Broad_AffymetrixGenechip6_Imputed'
   newEntityName <- 'ROSMAP_Rush-Broad_AffymetrixGenechip6_Imputed'
   sapply(1:nrow(rosmapTable@values),moveGeno,synList,newFileName,rosmapTable)
