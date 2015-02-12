@@ -16,7 +16,7 @@ moveGeno <- function(i,a,newFileName,rosmapTable){
 makeFile <- function(i,a,newEntityName,newFileName,rosmapTable){
   fileType <- strsplit(rosmapTable@values$oldFileName[i],'\\.')[[1]][4]
   newFileName <- paste0(newFileName,'.',fileType)
-  b <- File(newFileName,parentId=rosmapTable@values$newParentId[i],name=newEntityName)
+  b <- File(newFileName,parentId=rosmapTable@values$newParentId[i],name=paste0(newEntityName,'_',fileType))
   dataAnnotation <- list(
     dataType = 'DNA',
     disease = c('Alzheimers Disease','Control')
@@ -29,12 +29,21 @@ makeFile <- function(i,a,newEntityName,newFileName,rosmapTable){
   synSetAnnotations(b) <- dataAnnotation
   act <- Activity(name='ROSMAP Genotype Migration',
                   used=list(list(entity=rosmapTable@values$originalSynapseId[i],wasExecuted=F)),
-                  executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Emory/migrateEmoryFeb2015.R"))
+                  executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Rush-Broad/migrateROSMAPGenotypesFeb2015.R"))
   act <- storeEntity(act)
   generatedBy(b) <- act
   b <- synStore(b)
+  rosmapTable@values$newSynapseId[i] <- b$properties$id
+  wind <- is.na(rosmapTable@values$newSynapseId)
+  if(sum(wind)>0){
+    rosmapTable@values$newSynapseId[wind] <- ''
+  }
+  rosmapTable@values$newFileName[i] <- b$properties$name
+  rosmapTable@values$isMigrated[i] <- TRUE
+  rosmapTable@values$hasAnnotation[i] <- TRUE
+  rosmapTable@values$hasProvenance[i] <- TRUE
+  rosmapTable <- synStore(rosmapTable) 
 }
-updateTable <- function(){}
 
 migrateGenotype <- function(){
   rosmapTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'ROSMAP Genotypes%\' and migrator=\'Ben\' and toBeMigrated=TRUE',loadResult = TRUE)
@@ -43,32 +52,4 @@ migrateGenotype <- function(){
   newEntityName <- 'ROSMAP_Rush-Broad_AffymetrixGenechip6'
   sapply(1:nrow(rosmapTable),moveGeno,synList,newFileName,rosmapTable)
   sapply(1:nrow(rosmapTable),makeFile,synList,newEntityName,newFileName,rosmapTable)
-  updateTable(rosmapTable,newFileName)
 }
-
-
-
-
-#fileOrganization <- unique(rosmapTable@values$data)
-
-#syn3157275 (Methylation)
-#syn3157322 (Clinical)
-#syn3157325 (genotype)
-#syn3157329 (imputed genotype)
-
-#rosmapTable@values$newParentId[rosmapTable@values$data=='ROSMAP Methylation'] <- 'syn3157275'
-#rosmapTable@values$toBeMigrated[rosmapTable@values$data=='ROSMAP Methylation'] <- TRUE
-#rosmapTable@values$newParentId[rosmapTable@values$data=='ROSMAP Clinical'] <- 'syn3157322'
-#rosmapTable@values$toBeMigrated[rosmapTable@values$data=='ROSMAP Clinical'] <- TRUE
-#rosmapTable@values$newParentId[rosmapTable@values$data=='ROSMAP Genotypes'] <- 'syn3157325'
-#rosmapTable@values$toBeMigrated[rosmapTable@values$data=='ROSMAP Genotypes'] <- TRUE
-
-#rosmapTable@values$newParentId[rosmapTable@values$data=='ROSMAP Imputed Genotypes'] <- 'syn3157329'
-#rosmapTable@values$toBeMigrated[rosmapTable@values$data=='ROSMAP Imputed Genotypes'] <- TRUE
-
-#rosmapTable@values$newParentId[rosmapTable@values$data=='ROSMAP Imputed Genotypes CHOP'] <- 'syn3157329'
-#rosmapTable@values$toBeMigrated[rosmapTable@values$data=='ROSMAP Imputed Genotypes CHOP'] <- FALSE
-#rosmapTable@values$newSynapseId <- 'syn3157329'
-
-#rosmapTable <- synStore(rosmapTable)
-
