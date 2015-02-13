@@ -7,7 +7,7 @@ synapseLogin()
 
 
 moveGeno <- function(i,a,newFileName,mayoTable){
-  fileType <- strsplit(mayoTable@values$oldFileName[i],'\\.')[[1]][4]
+  fileType <- strsplit(mayoTable@values$oldFileName[i],'\\.')[[1]][2]
   newFileName <- paste0(newFileName,'.',fileType)
   cat(newFileName,'\n')
   system(paste('cp ',a[[i]]@filePath,' ',newFileName,sep=''))
@@ -15,7 +15,7 @@ moveGeno <- function(i,a,newFileName,mayoTable){
 
 makeFile <- function(i,a,newEntityName,newFileName,mayoTable){
   mayoTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'MayoCC Genotype%\' and migrator=\'Ben\' and toBeMigrated=TRUE',loadResult = TRUE)
-  fileType <- strsplit(mayoTable@values$oldFileName[i],'\\.')[[1]][4]
+  fileType <- strsplit(mayoTable@values$oldFileName[i],'\\.')[[1]][2]
   newFileName <- paste0(newFileName,'.',fileType)
   b <- File(newFileName,parentId=mayoTable@values$newParentId[i],name=paste0(newEntityName,'_',fileType))
   dataAnnotation <- list(
@@ -51,7 +51,10 @@ migrateGenotype <- function(){
   synList <- sapply(mayoTable@values$originalSynapseId[1:3],synGet)
   newFileName <- 'AMP-AD_MayoLOADGWAS_UFL-Mayo-ISB_IlluminaHumanHap300'
   newEntityName <- 'MayoLOADGWAS_UFL-Mayo-ISB_IlluminaHumanHap300'
-  sapply(1:nrow(mayoTable@values),moveGeno,synList,newFileName,mayoTable)
-  sapply(1:nrow(mayoTable@values),makeFile,synList,newEntityName,newFileName,mayoTable)
+  sapply(1:3,moveGeno,synList,newFileName,mayoTable)
+  sapply(1:3,makeFile,synList,newEntityName,newFileName,mayoTable)
 }
 migrateGenotype()
+
+
+
