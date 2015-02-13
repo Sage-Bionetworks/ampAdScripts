@@ -43,7 +43,7 @@ for i in range(df.shape[0]):
     print name
     os.rename(ent.path, name)
 
-    f = File(name, parentId=NEWPARENTID, name=name[7])
+    f = File(name, parentId=NEWPARENTID, name=name[7:])
     f.consortium = 'AMP-AD'
     f.study = 'MSBB'
     f.center = 'MSSM'
@@ -55,11 +55,6 @@ for i in range(df.shape[0]):
     f.dataSubType = 'geneExp'
     f.fileType =  'genomicMatrix'
     f.organism =  'human'
-    #f = syn.store(f, used = [ent], executed=['github'], activityName='Data migration')
-
-
-    #os.rename(filename, filename[7:])
-
-    # f = file(path, parentId=NEWPARENTID)
+    f = syn.store(f, used = [ent], executed=['https://github.com/Sage-Bionetworks/ampAdScripts/blob/5875f1dd1de2718a5817b8042b4249ee135b2f61/Mount-Sinai/migrateMSBBExpression.py'], activityName='Data migration')
     
 
