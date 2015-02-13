@@ -14,23 +14,23 @@ moveGeno <- function(i,a,newFileName,mayoTable){
 }
 
 makeFile <- function(i,a,newEntityName,newFileName,mayoTable){
-  mayoTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'mayo Genotypes%\' and migrator=\'Ben\' and toBeMigrated=TRUE',loadResult = TRUE)
+  mayoTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'MayoCC Genotype%\' and migrator=\'Ben\' and toBeMigrated=TRUE',loadResult = TRUE)
   fileType <- strsplit(mayoTable@values$oldFileName[i],'\\.')[[1]][4]
   newFileName <- paste0(newFileName,'.',fileType)
   b <- File(newFileName,parentId=mayoTable@values$newParentId[i],name=paste0(newEntityName,'_',fileType))
   dataAnnotation <- list(
     dataType = 'DNA',
-    disease = c('Alzheimers Disease','Control'),
-    platform = 'Affymetrix Genechip 6.0',
-    center = 'Rush-Broad',
-    study = 'mayo',
+    disease = c('Alzheimers Disease','Control','Progressive Supranuclear Palsy'),
+    platform = 'IlluminaHumanHap300',
+    center = 'UFL-Mayo-ISB',
+    study = 'MayoLOADGWAS',
     fileType = 'plink',
     organism = 'human'
   )
   synSetAnnotations(b) <- dataAnnotation
-  act <- Activity(name='mayo Genotype Migration',
+  act <- Activity(name='Mayo Genotype Migration',
                   used=list(list(entity=mayoTable@values$originalSynapseId[i],wasExecuted=F)),
-                  executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Rush-Broad/migratemayoGenotypesFeb2015.R"))
+                  executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Rush-Broad/migrateMayoGenotypesFeb2015.R"))
   act <- storeEntity(act)
   generatedBy(b) <- act
   b <- synStore(b)
@@ -47,10 +47,10 @@ makeFile <- function(i,a,newEntityName,newFileName,mayoTable){
 }
 
 migrateGenotype <- function(){
-  mayoTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'mayo Genotypes%\' and migrator=\'Ben\' and toBeMigrated=TRUE',loadResult = TRUE)
-  synList <- sapply(mayoTable@values$originalSynapseId,synGet)
-  newFileName <- 'AMP-AD_mayo_Rush-Broad_AffymetrixGenechip6'
-  newEntityName <- 'mayo_Rush-Broad_AffymetrixGenechip6'
+  mayoTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'MayoCC Genotype%\' and migrator=\'Ben\' and toBeMigrated=TRUE',loadResult = TRUE)
+  synList <- sapply(mayoTable@values$originalSynapseId[1:3],synGet)
+  newFileName <- 'AMP-AD_MayoLOADGWAS_UFL-Mayo-ISB_IlluminaHumanHap300'
+  newEntityName <- 'MayoLOADGWAS_UFL-Mayo-ISB_IlluminaHumanHap300'
   sapply(1:nrow(mayoTable@values),moveGeno,synList,newFileName,mayoTable)
   sapply(1:nrow(mayoTable@values),makeFile,synList,newEntityName,newFileName,mayoTable)
 }
