@@ -1,39 +1,39 @@
 require(synapseClient)
 synapseLogin()
-rosmapTable <- synTableQuery('select * from syn3163713 where data like \'ROSMAP Clinical%\'')
+mayoTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'MayoCC GWAS Clinical%\'')
 
-clinical <- synGet(rosmapTable@values$originalSynapseId[grep('xlsx',rosmapTable@values$oldFileName)])
+clinical <- synGet(mayoTable@values$originalSynapseId[grep('xlsx',mayoTable@values$oldFileName)])
 require(gdata)
-clinicalXls <- read.xls(clinical@filePath)
+clinicalXls <- read.xls(clinical@filePath,sheet=2)
 
-newFileName <- 'AMP-AD_ROSMAP_Rush-Broad_Clinical.csv'
-newEntityName <- 'ROSMAP_Rush-Broad_Clinical'
+newFileName <- 'AMP-AD_MayoLOADGWAS_UFL-Mayo-ISB_IlluminaHumanHap300_Covariates.csv'
+newEntityName <- 'MayoLOADGWAS_UFL-Mayo-ISB_IlluminaHumanHap300_Covariates'
 write.csv(clinicalXls,file=newFileName,row.names=F)
-i <- grep('xlsx',rosmapTable@values$oldFileName);
-b <- File(newFileName,parentId=rosmapTable@values$newParentId[i],name=newEntityName)
+i <- grep('xlsx',mayoTable@values$oldFileName);
+b <- File(newFileName,parentId=mayoTable@values$newParentId[i],name=newEntityName)
 dataAnnotation <- list(
   dataType = 'metaData',
-  disease = c('Alzheimers Disease','Control'),
-  center = 'Rush-Broad',
-  study = 'ROSMAP',
+  disease = c('Alzheimers Disease','Control','Progressive Supranuclear Palsy'),
+  center = 'UFL-Mayo-ISB',
+  study = 'MayoLOADGWAS',
   fileType = 'csv',
   organism = 'human'
 )
 synSetAnnotations(b) <- dataAnnotation
-act <- Activity(name='ROSMAP Clinical Data Migration',
-                used=list(list(entity=rosmapTable@values$originalSynapseId[i],wasExecuted=F)),
-                executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Rush-Broad/migrateROSMAPClinicalFeb2015.R"))
+act <- Activity(name='MayoLOADGWAS Covariate Data Migration',
+                used=list(list(entity=mayoTable@values$originalSynapseId[i],wasExecuted=F)),
+                executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Rush-Broad/migrateMayoLOADGWASCovariatesFeb2015.R"))
 act <- storeEntity(act)
 generatedBy(b) <- act
 b <- synStore(b)
-rosmapTable@values$newSynapseId[i] <- b$properties$id
-wind <- is.na(rosmapTable@values$newSynapseId)
+mayoTable@values$newSynapseId[i] <- b$properties$id
+wind <- is.na(mayoTable@values$newSynapseId)
 if(sum(wind)>0){
-  rosmapTable@values$newSynapseId[wind] <- ''
+  mayoTable@values$newSynapseId[wind] <- ''
 }
-rosmapTable@values$newFileName[i] <- newFileName
-rosmapTable@values$isMigrated[i] <- TRUE
-rosmapTable@values$hasAnnotation[i] <- TRUE
-rosmapTable@values$hasProvenance[i] <- TRUE
-rosmapTable <- synStore(rosmapTable)
+mayoTable@values$newFileName[i] <- newFileName
+mayoTable@values$isMigrated[i] <- TRUE
+mayoTable@values$hasAnnotation[i] <- TRUE
+mayoTable@values$hasProvenance[i] <- TRUE
+mayoTable <- synStore(mayoTable)
 system(paste0('rm ',newFileName))
