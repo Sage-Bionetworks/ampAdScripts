@@ -16,9 +16,11 @@ toMove = {
                   'dataType': 'metaData',
                   'tissueType':['Frontal Pole', 'Superior Temporal Gyrus','Parahippocampal Gyrus'],
                   'tissueTypeAbrv': ['FP', 'STG', 'PHG'],
+                  'platform': '',
                   'fileType':'genomicMatrix',
                   'name': 'AMP-AD_MSBB_MSSM_metaData_mRNA_IlluminaHiSeq2500_age_censored.tsv'},
     'syn3157409':{'parentId': 'syn3157740',  #'traits_for_array_data_age_censored.tsv'
+                  'platform': '',
                   'dataType': 'metaData',                  
                   'name' :'AMP-AD_MSBB_MSSM_metaData_mRNA_AffymetrixU133AB_age_censored.tsv'},
     'syn3159434':{'parentId' :'syn3157743',  #mssmad3_rawCounts.tsv',
@@ -50,7 +52,7 @@ for id, v in toMove.items():
     f.tissueType = v['tissueType']
     f.fileType =  fileType
     f.organism =  organism
-    f = syn.store(f, used = [k], executed=['syn2731322'], 
+    f = syn.store(f, used = [k], executed=['https://github.com/Sage-Bionetworks/ampAdScripts/blob/618c55908606d1afaef65bf79243040071e91440/Mount-Sinai/migrateMSBBMetaAndRNASeq.py'], 
                   activityName='Data migration')
     
 
