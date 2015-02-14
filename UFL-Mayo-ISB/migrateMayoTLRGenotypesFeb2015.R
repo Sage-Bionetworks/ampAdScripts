@@ -30,7 +30,7 @@ makeFile <- function(i,a,newEntityName,newFileName,mayoTable){
   synSetAnnotations(b) <- dataAnnotation
   act <- Activity(name='Mayo TLR Genotype Migration',
                   used=list(list(entity=mayoTable@values$originalSynapseId[i],wasExecuted=F)),
-                  executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Rush-Broad/migrateMayoTLRGenotypesFeb2015.R"))
+                  executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/UFL-Mayo-ISB/migrateMayoTLRGenotypesFeb2015.R"))
   act <- storeEntity(act)
   generatedBy(b) <- act
   b <- synStore(b)

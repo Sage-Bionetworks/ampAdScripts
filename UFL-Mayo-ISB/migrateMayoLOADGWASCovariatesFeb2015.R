@@ -22,7 +22,7 @@ dataAnnotation <- list(
 synSetAnnotations(b) <- dataAnnotation
 act <- Activity(name='MayoLOADGWAS Covariate Data Migration',
                 used=list(list(entity=mayoTable@values$originalSynapseId[i],wasExecuted=F)),
-                executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Rush-Broad/migrateMayoLOADGWASCovariatesFeb2015.R"))
+                executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/UFL-Mayo-ISB/migrateMayoLOADGWASCovariatesFeb2015.R"))
 act <- storeEntity(act)
 generatedBy(b) <- act
 b <- synStore(b)
