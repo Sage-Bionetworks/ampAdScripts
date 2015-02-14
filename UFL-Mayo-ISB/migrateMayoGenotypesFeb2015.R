@@ -44,6 +44,7 @@ makeFile <- function(i,a,newEntityName,newFileName,mayoTable){
   mayoTable@values$hasAnnotation[i] <- TRUE
   mayoTable@values$hasProvenance[i] <- TRUE
   mayoTable <- synStore(mayoTable) 
+  system(paste0('rm ',newFileName))
 }
 
 migrateGenotype <- function(){
