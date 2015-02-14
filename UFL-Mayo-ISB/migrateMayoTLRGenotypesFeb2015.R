@@ -49,8 +49,8 @@ makeFile <- function(i,a,newEntityName,newFileName,mayoTable){
 migrateGenotype <- function(){
   mayoTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'MayoCC Genotype%\' and migrator=\'Ben\' and toBeMigrated=TRUE',loadResult = TRUE)
   synList <- sapply(mayoTable@values$originalSynapseId,synGet)
-  newFileName <- 'AMP-AD_MayoLOADLOADGWAS_UFL-Mayo-ISB_TaqMan'
-  newEntityName <- 'MayoLOADLOADGWAS_UFL-Mayo-ISB_TaqMan'
+  newFileName <- 'AMP-AD_MayoLOADGWAS_UFL-Mayo-ISB_TaqMan'
+  newEntityName <- 'MayoLOADGWAS_UFL-Mayo-ISB_TaqMan'
   sapply(5:7,moveGeno,synList,newFileName,mayoTable)
   sapply(5:7,makeFile,synList,newEntityName,newFileName,mayoTable)
 }
