@@ -41,18 +41,19 @@ toMove = {
 for id, v in toMove.items():
     ent = syn.get(id)
     print v['name']
-    #os.rename(ent.path, v['name'])
+    os.rename(ent.path, v['name'])
 
     f = File(v['name'], parentId=v['parentId'], name=v['name'][7:-4])
     print f.name
     f.consortium, f.study, f.center, f.disease = consortium, study, center, disease
     f.dataType =  v['dataType']
     f.platfrom = v['platform']
-    f.tissueTypeAbrv = v['tissueTypeAbrv']
-    f.tissueType = v['tissueType']
+    if 'tissueTypeAbrv' in v:
+        f.tissueTypeAbrv = v['tissueTypeAbrv']
+        f.tissueType = v['tissueType']
     f.fileType =  fileType
     f.organism =  organism
-    f = syn.store(f, used = [k], executed=['https://github.com/Sage-Bionetworks/ampAdScripts/blob/618c55908606d1afaef65bf79243040071e91440/Mount-Sinai/migrateMSBBMetaAndRNASeq.py'], 
+    f = syn.store(f, used = [id], executed=['https://github.com/Sage-Bionetworks/ampAdScripts/blob/e71bbde262625e6999ea9defd98e10fce8f3c542/Mount-Sinai/migrateMSBBMetaAndRNASeq.py'], 
                   activityName='Data migration')
     
 
