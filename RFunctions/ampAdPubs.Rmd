@@ -1,0 +1,87 @@
+```{r libs, echo=FALSE, warning=FALSE, message=FALSE}
+library(stringr)
+library(plyr)
+library(knitr)
+library(synapseClient)
+library(XML)
+library(RCurl)
+# devtools::source_gist("6117476")
+# knit2synapse("./ampAdPubs.Rmd", owner="syn2775243", wikiName="AMP-AD Publications", overwrite=TRUE)
+
+opts_chunk$set(echo=FALSE, warning=FALSE, message=FALSE, fig.width=8, fig.height=8)
+
+synapseLogin()
+```
+
+```{r}
+getXMLValue <- function(x) {
+  ifelse(length(x) == 0, "", xmlValue(x[[1]]))
+}
+
+myFxn <- function(x) {
+  foo <- xmlDoc(x)  
+  
+  name.data <- xmlToDataFrame(getNodeSet(foo, "//Author"), homogeneous=FALSE)
+
+  auth.names <- transform(name.data,
+                          Author=sprintf("%s %s", LastName, Initials, collapse=", "))
+  
+  # Could do this instead
+  ##date.data <- xmlToDataFrame(getNodeSet(foo, "//PubDate"), homogeneous=FALSE)
+
+  df <- data.frame(ArticleTitle=getXMLValue(getNodeSet(foo, "//ArticleTitle")),
+                   Authors=paste(auth.names$Author, collapse=", "),
+                   Journal=getXMLValue(getNodeSet(foo, "//Journal//Title")),
+                   Volume=getXMLValue(getNodeSet(foo, "//Volume")),
+                   Issue=getXMLValue(getNodeSet(foo, "//Issue")),
+                   PubMonth=getXMLValue(getNodeSet(foo, "//PubDate//Month")),
+                   PubYear=getXMLValue(getNodeSet(foo, "//PubDate//Year")))
+  
+  df
+}
+
+getPubList <- function(searchUrl) {
+  
+  #   #For more details about Pubmed queries see: http://www.ncbi.nlm.nih.gov/books/NBK25500/
+  #Data record download - basic URL
+  eDDownload <- "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id="
+  
+  hlpURL <- getURL(searchUrl)
+  #The result is in form of XML document - you can paste the searchUrl in the browser to see/download it
+  doc <- xmlTreeParse(hlpURL, asText = TRUE)     
+  
+  idlist <- xmlChildren(doc$doc$children$eSearchResult[['IdList']])
+  idlist2 <- llply(idlist, xmlValue)
+  Idlist <- as.character(unlist(idlist2))
+  
+
+  hlp1 <- paste(eDDownload, paste(Idlist, collapse = ",", sep = ""), sep = "")
+  hlp2 <- paste(hlp1, "&rettype=xml", sep = "")
+
+  hlpURL <- getURL(hlp2)
+  # hlpURL
+  
+  testDoc <-  xmlParse(hlpURL)
+  
+  
+  pubmedArts <- xmlChildren(xmlRoot(testDoc))
+  names(pubmedArts) <- Idlist
+
+  pubsDF <- ldply(pubmedArts, myFxn, .id="PMID")
+}
+```
+
+```{r}
+q <- "(De+Jager[Author+-+Last]+OR+Bennett[Author+-+Last]+AND+AG046152[Grant+Number])+OR+AG046170[Grant+Number]+OR+AG046139[Grant+Number]"
+pubmedQueryString <- "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=(De+Jager[Author+-+Last]+OR+Bennett[Author+-+Last]+AND+AG046152[Grant+Number])+OR+AG046170[Grant+Number]+OR+AG046139[Grant+Number]"
+
+
+pubsDF <- getPubList(pubmedQueryString)
+pubsDF <- transform(pubsDF, 
+                    PMID=sprintf("[%s](http://www.ncbi.nlm.nih.gov/pubmed/?term=%s)", PMID, PMID))
+```
+
+```{r}
+kable(pubsDF)
+```
+
