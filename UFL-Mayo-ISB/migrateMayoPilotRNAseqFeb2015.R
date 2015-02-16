@@ -38,16 +38,20 @@ migrateMayoRNAseq <- function(i,newFileName,newEntityName,other,disease){
 }
 
 migrateMayoRNAseq(1,'AMP-AD_MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_Alzheimer_GeneCounts.txt.gz','MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_Alzheimer_GeneCounts',other=c('geneCounts','Unnormalized'),disease = 'Alzheimers Disease')
+migrateMayoRNAseq(2,'AMP-AD_MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_Alzheimer_TranscriptCounts.txt.gz','MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_Alzheimer_TranscriptCounts',other=c('transcriptCounts','Unnormalized'),disease = 'Alzheimers Disease')
+
+migrateMayoRNAseq(3,'AMP-AD_MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_ProgressiveSupranuclearPalsy_GeneCounts.txt.gz','MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_ProgressiveSupranuclearPalsy_GeneCounts',other=c('geneCounts','Unnormalized'),disease = 'Progressive Supranuclear Palsy')
+migrateMayoRNAseq(4,'AMP-AD_MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_ProgressiveSupranuclearPalsy_TranscriptCounts.txt.gz','MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_ProgressiveSupranuclearPalsy_TranscriptCounts',other=c('transcriptCounts','Unnormalized'),disease = 'Progressive Supranuclear Palsy')
+
+migrateMayoRNAseq(5,'AMP-AD_MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_Alzheimer_GeneCounts_Normalized.txt.gz','MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_Alzheimer_GeneCounts_Normalized',other=c('geneCounts','Normalized'),disease = 'Alzheimers Disease')
+migrateMayoRNAseq(6,'AMP-AD_MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_Alzheimer_GeneCounts_Transposed.txt.gz','MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_Alzheimer_GeneCounts_Transposed',other=c('geneCounts','Unnormalized','Transposed'),disease = 'Alzheimers Disease')
+
+migrateMayoRNAseq(7,'AMP-AD_MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_Alzheimer_TranscriptCounts_Normalized.txt.gz','MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_Alzheimer_TranscriptCounts_Normalized',other=c('transcriptCounts','Normalized'),disease = 'Alzheimers Disease')
+migrateMayoRNAseq(8,'AMP-AD_MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_Alzheimer_TranscriptCounts_Transposed.txt.gz','MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_Alzheimer_TranscriptCounts_Transposed',other=c('transcriptCounts','Unnormalized','Transposed'),disease = 'Alzheimers Disease')
+
+migrateMayoRNAseq(9,'AMP-AD_MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_ProgressiveSupranuclearPalsy_GeneCounts_Normalized.txt.gz','MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_ProgressiveSupranuclearPalsy_GeneCounts_Normalized',other=c('geneCounts','Normalized'),disease = 'Progressive Supranuclear Palsy')
+migrateMayoRNAseq(10,'AMP-AD_MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_ProgressiveSupranuclearPalsy_GeneCounts_Transposed.txt.gz','MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_ProgressiveSupranuclearPalsy_GeneCounts_Transposed',other=c('geneCounts','Unnormalized','Transposed'),disease = 'Progressive Supranuclear Palsy')
 
 
-migrateMayoRNAseq(2,'AMP-AD_MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_Alzheimer_TranscriptCounts.txt.gz','MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_Alzheimer_TranscriptCounts',other=c('geneCounts','Unnormalized'))
-migrateMayoRNAseq(3,'AMP-AD_UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts.txt.gz','UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts',other=c('transcriptCounts','Unnormalized'))
-migrateMayoRNAseq(4,'AMP-AD_UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts_Normalized.txt.gz','UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts_Normalized',other=c('geneCounts','Normalized'))
-migrateMayoRNAseq(5,'AMP-AD_UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts_Transposed.txt.gz','UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts_Transposed',other=c('geneCounts','Unnormalized','Transposed'))
-migrateMayoRNAseq(6,'AMP-AD_UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Normalized.txt.gz','UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Normalized',other=c('geneCounts','Normalized'))
-migrateMayoRNAseq(7,'AMP-AD_UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Transposed.txt.gz','UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Transposed',other=c('geneCounts','Unnormalized','Transposed'))
-migrateMayoRNAseq(8,'AMP-AD_UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Transposed.txt.gz','UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Transposed',other=c('geneCounts','Unnormalized','Transposed'))
-migrateMayoRNAseq(9,'AMP-AD_UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Transposed.txt.gz','UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Transposed',other=c('geneCounts','Unnormalized','Transposed'))
-migrateMayoRNAseq(10,'AMP-AD_UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Transposed.txt.gz','UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Transposed',other=c('geneCounts','Unnormalized','Transposed'))
-migrateMayoRNAseq(11,'AMP-AD_UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Transposed.txt.gz','UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Transposed',other=c('geneCounts','Unnormalized','Transposed'))
-migrateMayoRNAseq(12,'AMP-AD_UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Transposed.txt.gz','UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Transposed',other=c('geneCounts','Unnormalized','Transposed'))
+migrateMayoRNAseq(11,'AMP-AD_MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_ProgressiveSupranuclearPalsy_TranscriptCounts_Normalized.txt.gz','MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_ProgressiveSupranuclearPalsy_TranscriptCounts_Normalized',other=c('transcriptCounts','Normalized'),disease = 'Progressive Supranuclear Palsy')
+migrateMayoRNAseq(12,'AMP-AD_MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_ProgressiveSupranuclearPalsy_TranscriptCounts_Tranposed.txt.gz','MayoPilot_UFL-Mayo-ISB_IlluminaHiSeq2000_TemporalCortex_ProgressiveSupranuclearPalsy_TranscriptCounts_Transposed',other=c('transcriptCounts','Unnormalized','Transposed'),disease = 'Progressive Supranuclear Palsy')
