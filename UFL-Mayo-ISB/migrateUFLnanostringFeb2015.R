@@ -12,8 +12,8 @@ i <- 1
 normalized <- synGet(mayoTable@values$originalSynapseId[i])
 normalizedData <- read.table(normalized@filePath,header=T)
 
-newFileName <- 'AMP-AD_UFL_UFL-Mayo-ISB_Nanostring_APP_IL10_Normalized.csv'
-newEntityName <- 'UFL_UFL-Mayo-ISB_Nanostring_APP_IL10_Normalized'
+newFileName <- 'AMP-AD_IL10_UFL-Mayo-ISB_Nanostring_APP_Normalized.csv'
+newEntityName <- 'IL10_UFL-Mayo-ISB_Nanostring_APP_Normalized'
 write.csv(normalizedData,file=newFileName,row.names=F)
 
 b <- File(newFileName,parentId=mayoTable@values$newParentId[i],name=newEntityName)
@@ -22,13 +22,13 @@ dataAnnotation <- list(
   disease = c('Alzheimers'),
   mouseModel = 'APP',
   center = 'UFL-Mayo-ISB',
-  study = 'UFL',
+  study = 'IL10',
   fileType = 'csv',
   organism = 'mouse',
   other = 'Normalized'
 )
 synSetAnnotations(b) <- dataAnnotation
-act <- Activity(name='UFL Nanostring Data Migration',
+act <- Activity(name='IL10 Nanostring Data Migration',
                 used=list(list(entity=mayoTable@values$originalSynapseId[i],wasExecuted=F)),
                 executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/UFL-Mayo-ISB/migrateUFLnanostringFeb2015.R"))
 act <- storeEntity(act)
@@ -54,8 +54,8 @@ i <- 2
 normalized <- synGet(mayoTable@values$originalSynapseId[i])
 normalizedData <- read.table(normalized@filePath,header=T)
 
-newFileName <- 'AMP-AD_UFL_UFL-Mayo-ISB_Nanostring_APP_IL10_Unnormalized.csv'
-newEntityName <- 'UFL_UFL-Mayo-ISB_Nanostring_APP_IL10_Unnormalized'
+newFileName <- 'AMP-AD_IL10_UFL-Mayo-ISB_Nanostring_APP_Unnormalized.csv'
+newEntityName <- 'IL10_UFL-Mayo-ISB_Nanostring_APP_Unnormalized'
 write.csv(normalizedData,file=newFileName,row.names=F)
 
 b <- File(newFileName,parentId=mayoTable@values$newParentId[i],name=newEntityName)
@@ -64,13 +64,13 @@ dataAnnotation <- list(
   disease = c('Alzheimers'),
   mouseModel = 'APP',
   center = 'UFL-Mayo-ISB',
-  study = 'UFL',
+  study = 'IL10',
   fileType = 'csv',
   organism = 'mouse',
   other = 'Unnormalized'
 )
 synSetAnnotations(b) <- dataAnnotation
-act <- Activity(name='UFL Nanostring Data Migration',
+act <- Activity(name='IL10 Nanostring Data Migration',
                 used=list(list(entity=mayoTable@values$originalSynapseId[i],wasExecuted=F)),
                 executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/UFL-Mayo-ISB/migrateUFLnanostringFeb2015.R"))
 act <- storeEntity(act)
@@ -96,8 +96,8 @@ i <- 3
 normalized <- synGet(mayoTable@values$originalSynapseId[i])
 normalizedData <- read.table(normalized@filePath,header=T)
 
-newFileName <- 'AMP-AD_UFL_UFL-Mayo-ISB_Nanostring_APP_IL10_Covariates.csv'
-newEntityName <- 'UFL_UFL-Mayo-ISB_Nanostring_APP_IL10_Covariates'
+newFileName <- 'AMP-AD_IL10_UFL-Mayo-ISB_Nanostring_APP_Covariates.csv'
+newEntityName <- 'IL10_UFL-Mayo-ISB_Nanostring_APP_Covariates'
 write.csv(normalizedData,file=newFileName,row.names=F)
 
 b <- File(newFileName,parentId=mayoTable@values$newParentId[i],name=newEntityName)
@@ -106,12 +106,12 @@ dataAnnotation <- list(
   disease = c('Alzheimers'),
   mouseModel = 'APP',
   center = 'UFL-Mayo-ISB',
-  study = 'UFL',
+  study = 'IL10',
   fileType = 'csv',
   organism = 'mouse'
 )
 synSetAnnotations(b) <- dataAnnotation
-act <- Activity(name='UFL Nanostring Data Migration',
+act <- Activity(name='IL10 Nanostring Data Migration',
                 used=list(list(entity=mayoTable@values$originalSynapseId[i],wasExecuted=F)),
                 executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/UFL-Mayo-ISB/migrateUFLnanostringFeb2015.R"))
 act <- storeEntity(act)

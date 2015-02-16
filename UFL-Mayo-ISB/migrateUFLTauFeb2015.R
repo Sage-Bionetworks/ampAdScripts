@@ -12,7 +12,7 @@ migrateTau <- function(i,newFileName,newEntityName,other){
     platform= 'IlluminaHiSeq2000',
     mouseModel = 'Tau',
     center = 'UFL-Mayo-ISB',
-    study = 'UFL',
+    study = 'TAUAPPms',
     fileType = 'tsv',
     organism = 'mouse',
     other = other
@@ -37,12 +37,12 @@ migrateTau <- function(i,newFileName,newEntityName,other){
   system(paste0('rm ',newFileName))
 }
 
-migrateTau(2,'AMP-AD_UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts.txt.gz','UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts',other=c('geneCounts','Unnormalized'))
-migrateTau(3,'AMP-AD_UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts.txt.gz','UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts',other=c('transcriptCounts','Unnormalized'))
-migrateTau(4,'AMP-AD_UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts_Normalized.txt.gz','UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts_Normalized',other=c('geneCounts','Normalized'))
-migrateTau(5,'AMP-AD_UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts_Transposed.txt.gz','UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts_Transposed',other=c('geneCounts','Unnormalized','Transposed'))
-migrateTau(6,'AMP-AD_UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Normalized.txt.gz','UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Normalized',other=c('geneCounts','Normalized'))
-migrateTau(7,'AMP-AD_UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Transposed.txt.gz','UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Transposed',other=c('geneCounts','Unnormalized','Transposed'))
+migrateTau(2,'AMP-AD_TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts.txt.gz','TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts',other=c('geneCounts','Unnormalized'))
+migrateTau(3,'AMP-AD_TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts.txt.gz','TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts',other=c('transcriptCounts','Unnormalized'))
+migrateTau(4,'AMP-AD_TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts_Normalized.txt.gz','TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts_Normalized',other=c('geneCounts','Normalized'))
+migrateTau(5,'AMP-AD_TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts_Transposed.txt.gz','TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts_Transposed',other=c('geneCounts','Unnormalized','Transposed'))
+migrateTau(6,'AMP-AD_TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Normalized.txt.gz','TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Normalized',other=c('geneCounts','Normalized'))
+migrateTau(7,'AMP-AD_TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Transposed.txt.gz','TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Transposed',other=c('geneCounts','Unnormalized','Transposed'))
 
 
 #covariates
@@ -52,8 +52,8 @@ i <- 1
 normalized <- synGet(mayoTable@values$originalSynapseId[i])
 normalizedData <- read.table(normalized@filePath,header=T)
 
-newFileName <- 'AMP-AD_UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_Covariates.csv'
-newEntityName <- 'UFL_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_Covariates'
+newFileName <- 'AMP-AD_TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_Covariates.csv'
+newEntityName <- 'TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_Covariates'
 write.csv(normalizedData,file=newFileName,row.names=F)
 
 b <- File(newFileName,parentId=mayoTable@values$newParentId[i],name=newEntityName)
@@ -62,7 +62,7 @@ dataAnnotation <- list(
   disease = c('Alzheimers'),
   mouseModel = 'Tau',
   center = 'UFL-Mayo-ISB',
-  study = 'UFL',
+  study = 'TAUAPPms',
   fileType = 'csv',
   organism = 'mouse'
 )

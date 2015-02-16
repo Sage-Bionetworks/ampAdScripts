@@ -1,7 +1,7 @@
 require(synapseClient)
 synapseLogin()
 migrateMayoRNAseq <- function(i,newFileName,newEntityName,other,disease){
-  mayoTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'Mayo%RNAseq\' and migrator=\'Ben\' and toBeMigrated=TRUE and isMigrated=FALSE',loadResult = TRUE)
+  mayoTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'Mayo%RNAseq\' and migrator=\'Ben\' and toBeMigrated=TRUE',loadResult = TRUE)
   normalized <- synGet(mayoTable@values$originalSynapseId[i])
   system(paste('cp ',normalized@filePath,' ',newFileName,sep=''))
 
@@ -29,7 +29,7 @@ migrateMayoRNAseq <- function(i,newFileName,newEntityName,other,disease){
   if(sum(wind)>0){
     mayoTable@values$newSynapseId[wind] <- ''
   }
-  mayoTable@values$newFileName[i] <- newFileName
+  mayoTable@values$newFileName[i] <- ''
   mayoTable@values$isMigrated[i] <- TRUE
   mayoTable@values$hasAnnotation[i] <- TRUE
   mayoTable@values$hasProvenance[i] <- TRUE
