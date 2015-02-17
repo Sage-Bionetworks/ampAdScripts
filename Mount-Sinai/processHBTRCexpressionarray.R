@@ -75,7 +75,7 @@ generatedBy(syndatafile) <- act
 
 synSetAnnotations(syndatafile) <- list(consortium=consortium, study=study, center=center, platform=platform, 
                                        dataType=dataType, organism=organism, disease=disease, tissueType=tissueType,
-                                       tissueTypeAbrv=tissueTypeAbrv)
+                                       tissueTypeAbrv=tissueTypeAbrv, fileType="tsv")
 
 o <- synStore(syndatafile)
 
@@ -96,6 +96,6 @@ generatedBy(synmetafile) <- act
 
 synSetAnnotations(synmetafile) <- list(consortium=consortium, study=study, center=center, platform=platform, 
                                        dataType="metaData", organism=organism, disease=disease, tissueTypeAbrv=tissueTypeAbrv,
-                                       tissueType=tissueType)
+                                       tissueType=tissueType, fileType="tsv")
 
 o <- synStore(synmetafile)
