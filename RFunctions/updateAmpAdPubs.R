@@ -2,21 +2,25 @@
 
 library(synapseClient)
 library(knitr)
-devtools::source_gist("6117476")
+
+# Kenny's knit2synapse
+devtools::source_gist("2866ef5c0aeb64d265ed")
 
 synapseLogin()
+# # Testing
+# ownerId <- "syn2775243"
 
-parentWikiId <- "71916"
-wikiTitle <- "Publications"
-ownerId <- 'syn2580853'
+# REAL
+ownerId <- "syn2580853"
 
 owner <- synGet(ownerId)
-wikiHeaders <- synGetWikiHeaders(owner)
 
-toDelete <- Filter(function(x) x@parentId == parentWikiId && x@title == wikiTitle, wikiHeaders)[[1]]
+wPubs <- synGetWiki(parent=owner, id="89645")
 
-synRestDELETE(sprintf("/entity/%s/wiki/%s", ownerId, toDelete@id))
+wPubsNew <- knit2synapse("./ampAdPubs.Rmd", owner=ownerId, 
+                         parentWikiId="71916", wikiName="Publications",
+                         overwrite=TRUE, store=FALSE)
 
-knit2synapse("./ampAdPubs.Rmd", owner=ownerId, 
-             parentWikiId=parentWikiId, wikiName=wikiTitle,
-             overwrite=TRUE)
+wPubs@properties$markdown <- wPubsNew@properties$markdown
+wPubs <- synStore(wPubs)
+
