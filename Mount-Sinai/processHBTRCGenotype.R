@@ -71,7 +71,7 @@ copyFile <- function(o, newParentId, newName, newAnnotations) {
   generatedBy(newo) <- act
   
   synSetAnnotations(newo) <- list(consortium=consortium, study=study, center=center, platform=platform, 
-                                  dataType=dataType, organism=organism, disease=disease)
+                                  dataType=dataType, organism=organism, disease=disease, fileType=extension)
   
   newo <- synStore(newo)
 }
