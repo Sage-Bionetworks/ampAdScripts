@@ -1,6 +1,7 @@
 library(synapseClient)
 synapseLogin()
 
+projectId <- "syn2580853"
 queryString <- sprintf("select id,consortium,study,center,platform,dataType,fileType,name from file where projectId=='%s'", 
                        projectId)
 
