@@ -7,12 +7,12 @@ library(XML)
 library(RCurl)
 # devtools::source_gist("6117476")
 # knit2synapse("./ampAdPubs.Rmd", owner="syn2580853", parentWikiId="71916", wikiName="Publications", overwrite=TRUE)
-
+# TESTING
+# knit2synapse("./ampAdPubs.Rmd", owner="syn2775243", parentWikiId='89647', wikiName="Publications", overwrite=TRUE)
 opts_chunk$set(echo=FALSE, warning=FALSE, message=FALSE, fig.width=8, fig.height=8)
 
 synapseLogin()
 ```
-
 ```{r}
 getXMLValue <- function(x) {
   ifelse(length(x) == 0, "", xmlValue(x[[1]]))
@@ -70,11 +70,9 @@ getPubList <- function(searchUrl) {
   pubsDF <- ldply(pubmedArts, myFxn, .id="PMID")
 }
 ```
-
 ```{r}
 q <- "(De+Jager[Author+-+Last]+OR+Bennett[Author+-+Last]+AND+AG046152[Grant+Number])+OR+AG046170[Grant+Number]+OR+AG046139[Grant+Number]"
-pubmedQueryString <- "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=(De+Jager[Author+-+Last]+OR+Bennett[Author+-+Last]+AND+AG046152[Grant+Number])+OR+AG046170[Grant+Number]+OR+AG046139[Grant+Number]"
-
+pubmedQueryString <- "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=(De+Jager[Author+-+Last]+OR+Bennett[Author+-+Last]+AND+AG046152[Grant+Number])+OR+AG046170[Grant+Number]+OR+AG046139[Grant+Number]+OR+AG046161[Grant+Number]"
 
 pubsDF <- getPubList(pubmedQueryString)
 pubsDF <- transform(pubsDF, 
@@ -82,10 +80,7 @@ pubsDF <- transform(pubsDF,
 
 pubsDF <- pubsDF[order(pubsDF$PubYear), ]
 ```
-
 ## Publications from the AMP-AD U01 Projects
-
 ```{r}
 kable(pubsDF)
 ```
-
