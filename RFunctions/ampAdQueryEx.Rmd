@@ -1,0 +1,77 @@
+Files are annotated with a number of attributes to assist in finding them. Some of these annotations include `consortium`, `study`, `center`, `dataType`, `fileType`, and `platform`. These annotations can be used to build queries to find what data is available, as well as to download data in batch. This can be performed using any of the Synapse analytical clients: [R](https://www.synapse.org/#!Help:RClient), [Python](https://www.synapse.org/#!Help:PythonClient), or [command line](https://www.synapse.org/#!Help:CommandLineClient). These examples show how to do this using the `R` Synapse Client.
+```{r libs, echo=FALSE, warning=FALSE, message=FALSE}
+library(synapseClient)
+library(knitr)
+opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE, fig.width=8, fig.height=8)
+
+synapseLogin()
+
+# # Create this using knit2synapse
+# devtools::source_gist("6117476")
+# knit2synapse("./ampAdQueryEx.Rmd", owner="syn2775243", parentWikiId='89647', wikiName="AMP-AD Data Query Examples", overwrite=TRUE)
+```
+```{r echo=FALSE}
+projectId <- "syn2580853"
+```
+Using the `projectId` for AMP-AD (``r projectId``) we can restrict our queries to files in the AMP-AD consortium. Let's use this `projectId` to construct a query for the ROSMAP data.
+```{r}
+projectId <- "syn2580853"
+study <- "ROSMAP"
+queryString <- sprintf("select id,consortium,study,center,platform,dataType,fileType from file where projectId=='%s' AND study=='%s'", projectId, study)
+```
+We then use `synQuery` to retrieve the results to an R `data.frame`.
+```{r eval=FALSE}
+queryResults <- synQuery(queryString)
+```
+We can restrict this query further by using built-in `R` functions:
+```{r eval=FALSE}
+queryResultsDNAPlink <- subset(queryResults, file.dataType=="DNA" & file.fileType == "plink")
+```
+We can use a simple function to retrieve these files from Synapse in batch as well. For testing purposes I've set `downloadFile=FALSE` to save bandwidth. If you want to work with the files, simply change this to `TRUE`.
+```{r batchSynapseDownload, eval=FALSE}
+ROSMAPPlinkFiles <- mapply(function(x) synGet(x, downloadFile=FALSE), 
+                           queryResultsDNAPlink$file.id)
+```
+## More example queries within studies
+### Find all available studies
+```{r}
+queryString <- sprintf("select study from file where projectId=='%s'", projectId)
+queryResults <- synQuery(queryString)
+```
+Available studies: `r paste(unique(queryResults$file.study), collapse=",")`
+### Emory
+```{r, echo=TRUE, eval=FALSE}
+study <- "Emory"
+queryString <- sprintf("select id,consortium,study,center,platform,dataType,fileType from file where projectId=='%s' AND study=='%s'", projectId, study)
+queryResults <- synQuery(queryString)
+```
+### Harvard Brain Tissue Resource Center
+```{r, echo=TRUE, eval=FALSE}
+study <- "HBTRC"
+queryString <- sprintf("select id,consortium,study,center,platform,dataType,fileType from file where projectId=='%s' AND study=='%s'", projectId, study)
+queryResults <- synQuery(queryString)
+```
+### Mount Sinai Brain bank
+```{r, echo=TRUE, eval=FALSE}
+study <- "MSSB"
+queryString <- sprintf("select id,consortium,study,center,platform,dataType,fileType from file where projectId=='%s' AND study=='%s'", projectId, study)
+queryResults <- synQuery(queryString)
+```
+### DNA files
+```{r, echo=TRUE, eval=FALSE}
+dataType <- "DNA"
+queryString <- sprintf("select id,consortium,study,center,platform,dataType,fileType from file where projectId=='%s' AND dataType=='%s'", projectId, dataType)
+queryResults <- synQuery(queryString)
+```
+### Find number of files available across studies and centers
+```{r}
+queryString <- sprintf("select study,center from file where projectId=='%s'", projectId)
+queryResults <- synQuery(queryString)
+```
+```{r studycentertable, echo=FALSE}
+kable(with(queryResults, table(Study=file.study, Center=file.center)))
+```
+## Conclusion
+These types of queries:
+``r queryString``
+Will work in any of the programatic Synapse clients: `R`, `Python`, or the command line.
