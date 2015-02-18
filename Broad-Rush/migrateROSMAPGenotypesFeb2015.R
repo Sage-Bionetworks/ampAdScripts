@@ -22,7 +22,7 @@ makeFile <- function(i,a,newEntityName,newFileName,rosmapTable){
     dataType = 'DNA',
     disease = c('Alzheimers Disease','Control'),
     platform = 'Affymetrix Genechip 6.0',
-    center = 'Rush-Broad',
+    center = 'Broad-Rush',
     study = 'ROSMAP',
     fileType = 'plink',
     organism = 'human'

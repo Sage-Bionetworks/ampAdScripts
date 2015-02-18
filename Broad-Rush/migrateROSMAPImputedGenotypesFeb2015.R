@@ -28,13 +28,13 @@ makeFile <- function(i,newEntityName,newFileName,rosmapTable){
     b <- File(newFileName,parentId=rosmapTable@values$newParentId[i],name=paste0(newEntityName,'_',foo[1],'_Group',foo[3],'_',fileType))
     dataAnnotation <- list(
       dataType = 'DNA',
+      dataSubType = 'Imputed Genotype'
       disease = c('Alzheimers Disease','Control'),
       platform = 'Affymetrix Genechip 6.0',
-      center = 'Rush-Broad',
+      center = 'Broad-Rush',
       study = 'ROSMAP',
-      fileType = 'dosage',
+      fileType = 'tsv',
       organism = 'human',
-      dataSubType = 'imputedGenotypes',
       imputationReference = 'HapMap3'
     )
     synSetAnnotations(b) <- dataAnnotation
