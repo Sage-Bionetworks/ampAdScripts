@@ -30,7 +30,7 @@ makeFile <- function(i,a,newEntityName,newFileName,rosmapTable){
   synSetAnnotations(b) <- dataAnnotation
   act <- Activity(name='ROSMAP Genotype Migration',
                   used=list(list(entity=rosmapTable@values$originalSynapseId[i],wasExecuted=F)),
-                  executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Rush-Broad/migrateROSMAPGenotypesFeb2015.R"))
+                  executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Broad-Rush/migrateROSMAPGenotypesFeb2015.R"))
   act <- storeEntity(act)
   generatedBy(b) <- act
   b <- synStore(b)
