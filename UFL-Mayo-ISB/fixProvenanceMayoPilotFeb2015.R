@@ -39,11 +39,11 @@ for (i in 1:nrow(res)){
   a <- synTableQuery(str)
   if (i==1){
     act <- Activity(name='Mayo GWAS Covariate Data Migration',
-                    used=list(list(entity=a@values$originalSynapseId[i],wasExecuted=F)),
+                    used=list(list(entity=a@values$originalSynapseId,wasExecuted=F)),
                     executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/UFL-Mayo-ISB/migrateMayoLOADGWASCovariatesFeb2015.R"))    
   }else{
     act <- Activity(name='Mayo GWAS Genotype Migration',
-                    used=list(list(entity=mayoTable@values$originalSynapseId[i],wasExecuted=F)),
+                    used=list(list(entity=a@values$originalSynapseId,wasExecuted=F)),
                     executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/UFL-Mayo-ISB/migrateMayoGenotypesFeb2015.R"))    
   }
   
