@@ -28,12 +28,12 @@ makeFile <- function(i,newEntityName,newFileName,rosmapTable){
     b <- File(newFileName,parentId=rosmapTable@values$newParentId[i],name=paste0(newEntityName,'_',foo[1],'_Group',foo[3],'_',fileType))
     dataAnnotation <- list(
       dataType = 'DNA',
-      dataSubType = 'Imputed Genotype'
+      dataSubType = 'Imputed Genotype',
       disease = c('Alzheimers Disease','Control'),
       platform = 'Affymetrix Genechip 6.0',
       center = 'Broad-Rush',
       study = 'ROSMAP',
-      fileType = 'tsv',
+      fileType = 'txt',
       organism = 'Homo sapiens',
       imputationReference = 'HapMap3'
     )
@@ -62,11 +62,11 @@ makeFile <- function(i,newEntityName,newFileName,rosmapTable){
       dataType = 'DNA',
       disease = c('Alzheimers Disease','Control'),
       platform = 'Affymetrix Genechip 6.0',
-      center = 'Rush-Broad',
+      center = 'Broad-Rush',
       study = 'ROSMAP',
-      fileType = 'fam',
-      organism = 'human',
-      dataSubType = 'imputedGenotypes',
+      fileType = 'txt',
+      organism = 'Homo sapiens',
+      dataSubType = 'Imputed Genotypes',
       imputationReference = 'HapMap3'      
     )
     synSetAnnotations(b) <- dataAnnotation
@@ -94,11 +94,11 @@ makeFile <- function(i,newEntityName,newFileName,rosmapTable){
       dataType = 'DNA',
       disease = c('Alzheimers Disease','Control'),
       platform = 'Affymetrix Genechip 6.0',
-      center = 'Rush-Broad',
+      center = 'Broad-Rush',
       study = 'ROSMAP',
-      fileType = 'fam',
-      organism = 'human',
-      dataSubType = 'imputedGenotypes',
+      fileType = 'txt',
+      organism = 'Homo sapiens',
+      dataSubType = 'Imputed Genotypes',
       imputationReference = 'HapMap3'      
     )
     synSetAnnotations(b) <- dataAnnotation
