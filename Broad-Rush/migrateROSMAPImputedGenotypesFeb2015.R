@@ -34,7 +34,7 @@ makeFile <- function(i,newEntityName,newFileName,rosmapTable){
       center = 'Broad-Rush',
       study = 'ROSMAP',
       fileType = 'tsv',
-      organism = 'human',
+      organism = 'Homo sapiens',
       imputationReference = 'HapMap3'
     )
     synSetAnnotations(b) <- dataAnnotation

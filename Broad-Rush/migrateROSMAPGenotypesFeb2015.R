@@ -25,7 +25,7 @@ makeFile <- function(i,a,newEntityName,newFileName,rosmapTable){
     center = 'Broad-Rush',
     study = 'ROSMAP',
     fileType = 'plink',
-    organism = 'human'
+    organism = 'Homo sapiens'
   )
   synSetAnnotations(b) <- dataAnnotation
   act <- Activity(name='ROSMAP Genotype Migration',
