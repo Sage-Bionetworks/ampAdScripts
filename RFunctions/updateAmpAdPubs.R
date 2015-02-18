@@ -23,4 +23,3 @@ wPubsNew <- knit2synapse("./ampAdPubs.Rmd", owner=ownerId,
 
 wPubs@properties$markdown <- wPubsNew@properties$markdown
 wPubs <- synStore(wPubs)
-
