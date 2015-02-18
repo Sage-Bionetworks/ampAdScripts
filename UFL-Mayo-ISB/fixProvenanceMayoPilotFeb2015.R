@@ -9,9 +9,10 @@ for(i in 1:nrow(res)){
   str <- paste0('select * from syn3163713 where newSynapseId=\'',res$entity.id[1],'\'')
   a <- synTableQuery(str)
   a@values$newParentId <- 'syn3157268'
+  
   if(nrow(a@values)>1){
     act <- Activity(name='Mayo Pilot Data Migration',
-                  used=as.list(c(a@values$originalSynapseId))),
+                  used=as.list(c(a@values$originalSynapseId)),
                   executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/UFL-Mayo-ISB/migrateMayoPilotCovariatesFeb2015.R"))
   }else{
     act <- Activity(name='Mayo Pilot RNAseq Data Migration',
@@ -22,3 +23,11 @@ for(i in 1:nrow(res)){
   generatedBy(b) <- act
   b <- synStore(b)  
 }
+
+for (i in 1:12){
+  str <- paste0('select * from syn3163713 where newSynapseId=\'',res$entity.id[1],'\'')
+  a <- synTableQuery(str)
+  a@values$newParentId <- 'syn3157268'
+  a <- synStore(a)
+}
+
