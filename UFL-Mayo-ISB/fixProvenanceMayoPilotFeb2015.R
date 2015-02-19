@@ -69,3 +69,64 @@ for (i in 1:nrow(res)){
   b <- synStore(b)   
 }
 
+
+#egwas results
+
+res <- synQuery('SELECT id, name, concreteType FROM entity WHERE parentId=="syn3157249"')
+for (i in 1:nrow(res)){
+  
+  b <- synGet(res$entity.id[i],downloadFile = FALSE)
+  str <- paste0('select * from syn3163713 where newSynapseId=\'',res$entity.id[i],'\'')
+  a <- synTableQuery(str)
+  
+  act <- Activity(name='Mayo EGWAS Results Migration',
+                  used=list(list(entity=a@values$originalSynapseId,wasExecuted=F)),
+                  executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/UFL-Mayo-ISB/migrateMayoEGWASResultsFeb2015.R"))
+  act <- storeEntity(act)
+  generatedBy(b) <- act
+  b <- synStore(b)   
+}
+
+
+
+#TAU
+
+res <- synQuery('SELECT id, name, concreteType FROM entity WHERE parentId=="syn3157183"')
+
+for (i in 1:nrow(res)){
+  b <- synGet(res$entity.id[i],downloadFile = FALSE)
+  str <- paste0('select * from syn3163713 where newSynapseId=\'',res$entity.id[i],'\'')
+  a <- synTableQuery(str)  
+  
+  
+  act <- Activity(name='UFL Tau RNAseq Data Migration',
+                used=list(list(entity=a@values$originalSynapseId,wasExecuted=F)),
+                executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/UFL-Mayo-ISB/migrateUFLTauFeb2015.R"))
+  
+  act <- storeEntity(act)
+  generatedBy(b) <- act
+  b <- synStore(b)   
+
+}
+
+
+
+#IL10
+
+res <- synQuery('SELECT id, name, concreteType FROM entity WHERE parentId=="syn3157175"')
+
+for (i in 1:nrow(res)){
+  b <- synGet(res$entity.id[i],downloadFile = FALSE)
+  str <- paste0('select * from syn3163713 where newSynapseId=\'',res$entity.id[i],'\'')
+  a <- synTableQuery(str)  
+  
+  
+  act <- Activity(name='IL10 Nanostring Data Migration',
+                  used=list(list(entity=a@values$originalSynapseId,wasExecuted=F)),
+                  executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/UFL-Mayo-ISB/migrateUFLnanostringFeb2015.R"))
+  
+  act <- storeEntity(act)
+  generatedBy(b) <- act
+  b <- synStore(b)   
+  
+}
