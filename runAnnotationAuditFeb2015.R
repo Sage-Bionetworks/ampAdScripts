@@ -24,6 +24,25 @@ for(i in 1:nrow(res@values)){
 
 #synchronize internal and external annotations
 
+resPortal <- synQuery('select id, name from file where projectId=="syn2580853"')
+resMigration <- synTableQuery('select * from syn3163713 where isMigrated=TRUE')
+
+wkeep <- which(resPortal$file.id%in%resMigration@values$newSynapseId)
+
+for (i in wkeep){
+  newId <- resPortal$file.id[i]
+  oldId <- resMigration@values$originalSynapseId[resMigration@values$newSynapseId==newId]
+  synNew <- synGet(newId,downloadFile=F)
+  for (syn in oldId){
+    synOld <- synGet(syn,downloadFile=F)
+    newAnnotations <- synGetAnnotations(synNew)
+    synSetAnnotations(synOld) <- as.list(newAnnotations)
+    synOld <- synStore(synOld,forceVersion=FALSE)
+  }
+  cat('Finished',i,'of',length(wkeep),'\n')
+}
+
+
 ##clinical, covariate, metaData -> fix
 
 
