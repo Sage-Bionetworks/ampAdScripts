@@ -45,5 +45,10 @@ for (i in wkeep){
 
 ##clinical, covariate, metaData -> fix
 
+#metaData
+res <- synQuery('select id, name from file where projectId=="syn2580853" and dataType=="metaData"')
+
+
+
 
 ##

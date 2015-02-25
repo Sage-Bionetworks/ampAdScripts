@@ -63,11 +63,11 @@ migrateData <- function(i,emoryTable,fileTypes){
       b <- b[-1,]
       b <- b[-nrow(b),]
       b <- cleanEmoryClinical(b)
-      write.csv(b,file='AMP-AD_Emory_Emory_Clinical.csv',row.names=FALSE)
-      b <- File('AMP-AD_Emory_Emory_Clinical.csv',parentId=emoryTable@values$newParentId[i],name='Emory_Emory_Clinical')
+      write.csv(b,file='AMP-AD_Emory_Emory_Covariates.csv',row.names=FALSE)
+      b <- File('AMP-AD_Emory_Emory_Covariates.csv',parentId=emoryTable@values$newParentId[i],name='Emory_Emory_Covariates')
       
       clinicalAnnotation <- list(
-        dataType = 'metaData',
+        dataType = 'Covariates',
         tissueType = 'Medial Frontal Gyrus',
         center = 'Emory',
         study = 'Emory',
@@ -75,7 +75,7 @@ migrateData <- function(i,emoryTable,fileTypes){
         organism = 'human'
       )
       synSetAnnotations(b) <- clinicalAnnotation
-      act <- Activity(name='Emory Clinical Reprocessing',used=list(list(entity=emoryTable@values$originalSynapseId[i],wasExecuted=F)),executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Emory/migrateEmoryFeb2015.R"))
+      act <- Activity(name='Emory Covariate Reprocessing',used=list(list(entity=emoryTable@values$originalSynapseId[i],wasExecuted=F)),executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Emory/migrateEmoryFeb2015.R"))
       act <- storeEntity(act)
       generatedBy(b) <- act
       b <- synStore(b)
@@ -121,7 +121,7 @@ migrateData <- function(i,emoryTable,fileTypes){
       system(paste('cp ',a@filePath,' ',newFileName,sep=''))
       b <- File(paste('',newFileName,sep=''),parentId=emoryTable@values$newParentId[i],name=newEntityName)
       rawAnnotation <- list(
-        dataType = 'metaData',
+        dataType = 'Protein',
         disease = diseaseType,
         platform = 'LTQOrbitrapXL',
         tissueType = 'Medial Frontal Gyrus',
@@ -256,6 +256,8 @@ for (i in 1:nrow(emoryTable@values)){
   migrateData(i,emoryTable,fileTypes)
   emoryTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'Emory%\'',loadResult = TRUE)
 }
-
+#i <- 1
+#migrateData(i,emoryTable,fileTypes)
+#emoryTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'Emory%\'',loadResult = TRUE)
 
 
