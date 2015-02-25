@@ -48,7 +48,22 @@ for (i in wkeep){
 #metaData
 res <- synQuery('select id, name from file where projectId=="syn2580853" and dataType=="metaData"')
 
+for (i in 2:9){
+ synObj <- synGet(res$file.id[i],downloadFile=F)
+ annot <- as.list(synGetAnnotations(synObj))
+ annot$dataType <- 'Protein'
+ synSetAnnotations(synObj) <- annot
+ synObj <- synStore(synObj,forceVersion=F)
+}
 
+res <- synQuery('select id, name from file where projectId=="syn2580853" and dataType=="metaData"')
 
+for (i in 1:5){
+  synObj <- synGet(res$file.id[i],downloadFile=F)
+  annot <- as.list(synGetAnnotations(synObj))
+  annot$dataType <- 'Covariates'
+  synSetAnnotations(synObj) <- annot
+  synObj <- synStore(synObj,forceVersion=F) 
+}
 
 ##
