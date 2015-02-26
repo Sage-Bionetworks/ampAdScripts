@@ -65,9 +65,9 @@ migrateMayoArray <- function(i,newExpressionFileName,newExpressionEntityName,new
 }
 
 
-migrateMayoArray(1,'AMP-AD_MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_Cerebellum.txt','MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_Cerebellum',tissueType = 'Cerebellum')
+migrateMayoArray(1,'AMP-AD_MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_Cerebellum.csv','MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_Cerebellum','AMP-AD_MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_Cerebellum_Covariates.csv','MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_Cerebellum_Covariates',tissueType = 'Cerebellum')
 
-migrateMayoArray(2,'AMP-AD_MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_TemporalCortex.txt','MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_TemporalCortex',tissueType = 'Temporal Cortex')
+migrateMayoArray(2,'AMP-AD_MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_TemporalCortex.csv','MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_TemporalCortex','AMP-AD_MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_TemporalCortex_Covariates.csv','MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_TemporalCortex_Covariates',tissueType = 'Temporal Cortex')
 
 
 
