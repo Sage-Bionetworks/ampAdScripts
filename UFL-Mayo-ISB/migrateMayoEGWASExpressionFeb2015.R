@@ -6,7 +6,7 @@ synapseLogin()
 splitCovariates <- function(synObj,clinicalFileName,expressionFileName){
   res <- read.table(synObj@filePath,header=T)
   write.csv(res[,1:13],file=clinicalFileName,row.names=F,quote=F)
-  write.csv(res[,-c(1:13)],file=expressionFileName,row.names=F,quote=F)
+  write.csv(res[,-c(3:13)],file=expressionFileName,row.names=F,quote=F)
 }
 
 
@@ -15,7 +15,7 @@ migrateMayoArray <- function(i,newExpressionFileName,newExpressionEntityName,new
   normalized <- synGet(mayoTable@values$originalSynapseId[i])
   system(paste('cp ',normalized@filePath,' ',newExpressionFileName,sep=''))
 
-  splitCovariates <- function(normalized,newCovariateFileName,newExpressionFileName)
+  splitCovariates(normalized,newCovariateFileName,newExpressionFileName)
   
     b <- File(newExpressionFileName,parentId=mayoTable@values$newParentId[i],name=newExpressionEntityName)
     foo <- File(newCovariateFileName,parentId=mayoTable@values$newParentId[i],name=newCovariateEntityName)
@@ -48,7 +48,7 @@ migrateMayoArray <- function(i,newExpressionFileName,newExpressionEntityName,new
                   executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/UFL-Mayo-ISB/migrateMayoEGWASExpressionFeb2015.R"))
   act <- storeEntity(act)
   generatedBy(b) <- act
-  generateBy(foo) <- act
+  generatedBy(foo) <- act
   b <- synStore(b)
   foo <- synStore(foo)
   mayoTable@values$newSynapseId[i] <- b$properties$id
@@ -61,7 +61,7 @@ migrateMayoArray <- function(i,newExpressionFileName,newExpressionEntityName,new
   mayoTable@values$hasAnnotation[i] <- TRUE
   mayoTable@values$hasProvenance[i] <- TRUE
   mayoTable <- synStore(mayoTable)
-  system(paste0('rm ',newFileName))
+  #system(paste0('rm ',newFileName))
 }
 
 
