@@ -48,7 +48,7 @@ migrateMayoArray <- function(i,newExpressionFileName,newExpressionEntityName,new
                   executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/UFL-Mayo-ISB/migrateMayoEGWASExpressionFeb2015.R"))
   act <- storeEntity(act)
   generatedBy(b) <- act
-  generateBy(foo) <- act)
+  generateBy(foo) <- act
   b <- synStore(b)
   foo <- synStore(foo)
   mayoTable@values$newSynapseId[i] <- b$properties$id
