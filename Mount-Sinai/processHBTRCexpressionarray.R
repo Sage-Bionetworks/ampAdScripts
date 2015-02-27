@@ -80,7 +80,7 @@ synSetAnnotations(syndatafile) <- list(consortium=consortium, study=study, cente
 o <- synStore(syndatafile)
 
 ## write metadata
-dataType <- "metaData"
+dataType <- "Covariates"
 extension <- "tsv"
 
 newmetafilename <- paste(paste(consortium, study, center, platform, dataType, sep="_"),
@@ -95,7 +95,7 @@ act <- Activity(name="Add disease status column", used=list(metafile, alzfile, n
 generatedBy(synmetafile) <- act
 
 synSetAnnotations(synmetafile) <- list(consortium=consortium, study=study, center=center, platform=platform, 
-                                       dataType="metaData", organism=organism, disease=disease, tissueTypeAbrv=tissueTypeAbrv,
+                                       dataType=dataType, organism=organism, disease=disease, tissueTypeAbrv=tissueTypeAbrv,
                                        tissueType=tissueType, fileType="tsv")
 
 o <- synStore(synmetafile)
