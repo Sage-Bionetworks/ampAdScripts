@@ -1,8 +1,4 @@
 library(synapseClient)
-library(plyr)
-library(dplyr)
-library(reshape2)
-
 library(rGithubClient)
 
 synapseLogin()
