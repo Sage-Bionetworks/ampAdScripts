@@ -8,9 +8,20 @@ thisRepo <- getRepo("Sage-Bionetworks/ampAdScripts")
 thisScript <- getPermlink(thisRepo, "Mount-Sinai/processHBTRCexpressionarray.R")
 
 ## Get files
-alzfile <- synGet("syn2706445")
-normfile <- synGet("syn2706448")
-metafile <- synGet("syn3157400")
+alzFileId <- "syn2706445"
+normFileId <- "syn2706448"
+metaFileId <- "syn3157400"
+
+alzfile <- synGet(alzFileId)
+normfile <- synGet(normFileId)
+metafile <- synGet(metaFileId)
+
+## Get info about where they go
+q <- "SELECT * FROM syn3163713 where data like 'HBTRC%'"
+res <- synTableQuery(q)
+
+newExprParentId <- subset(res@values, originalSynapseId == normFileId)$newParentId
+newMetaParentId <- subset(res@values, originalSynapseId == metaFileId)$newParentId
 
 ## Load files
 alzdata <- read.delim(alzfile@filePath, check.names=FALSE)
@@ -63,7 +74,7 @@ newdatafilename <- paste(paste(consortium, study, center, platform, other, sep="
 
 write.table(mergeddata, file=newdatafilename, sep="\t", row.names=FALSE, quote=FALSE)
 
-syndatafile <- File(newdatafilename, parentId="syn3157688",
+syndatafile <- File(newdatafilename, parentId=newExprParentId,
                 name=paste(consortium, study, center, platform, other, sep="_"))
 
 act <- Activity(name="Merge files", used=list(alzfile, normfile), executed=thisScript)
@@ -75,6 +86,10 @@ synSetAnnotations(syndatafile) <- list(consortium=consortium, study=study, cente
 
 o <- synStore(syndatafile)
 
+## Update the table with info
+res@values$newSynapseId[res@values$originalSynapseId %in% c(alzFileId, normFileId)] <- o@properties$id
+res@values$newParentId[res@values$originalSynapseId %in% c(alzFileId, normFileId)] <- newExprParentId
+
 ## write metadata
 dataType <- "Covariates"
 extension <- "tsv"
@@ -84,7 +99,7 @@ newmetafilename <- paste(paste(consortium, study, center, platform, dataType, se
 
 write.table(metadata, file=newmetafilename, sep="\t", row.names=FALSE, quote=FALSE)
 
-synmetafile <- File(newmetafilename, parentId="syn3157691",
+synmetafile <- File(newmetafilename, parentId=newMetaParentId,
                 name=paste(consortium, study, center, platform, dataType, sep="_"))
 
 act <- Activity(name="Add disease status column", used=list(metafile, alzfile, normfile), executed=list(thisScript))
@@ -95,3 +110,10 @@ synSetAnnotations(synmetafile) <- list(consortium=consortium, study=study, cente
                                        tissueType=tissueType, fileType="tsv")
 
 o <- synStore(synmetafile)
+
+## Update table with new info
+## Update the table with info
+res@values$newSynapseId[res@values$originalSynapseId %in% c(metaFileId)] <- o@properties$id
+res@values$newParentId[res@values$originalSynapseId %in% c(metaFileId)] <- newMetaParentId
+
+res <- synStore(res)
