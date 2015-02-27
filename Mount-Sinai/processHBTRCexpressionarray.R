@@ -89,6 +89,7 @@ o <- synStore(syndatafile)
 ## Update the table with info
 res@values$newSynapseId[res@values$originalSynapseId %in% c(alzFileId, normFileId)] <- o@properties$id
 res@values$newParentId[res@values$originalSynapseId %in% c(alzFileId, normFileId)] <- newExprParentId
+res@values$newFileName[res@values$originalSynapseId %in% c(alzFileId, normFileId)] <- newdatafilename
 
 ## write metadata
 dataType <- "Covariates"
@@ -115,5 +116,6 @@ o <- synStore(synmetafile)
 ## Update the table with info
 res@values$newSynapseId[res@values$originalSynapseId %in% c(metaFileId)] <- o@properties$id
 res@values$newParentId[res@values$originalSynapseId %in% c(metaFileId)] <- newMetaParentId
+res@values$newFileName[res@values$originalSynapseId %in% c(metaFileId)] <- newmetafilename
 
 res <- synStore(res)
