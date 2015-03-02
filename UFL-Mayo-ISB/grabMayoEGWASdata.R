@@ -65,9 +65,13 @@ mayo_egwas_tcx_data <- mayo_egwas_tcx_data[ind3[tcxSamples],]
 write.table(cere_cov[,1:2],file='cerebellumIds.txt',sep=' ',quote=F,row.names=F,col.names=F)
 write.table(tcx_cov[,1:2],file='temporalcortexIds.txt',sep=' ',quote=F,row.names=F,col.names=F)
 
+keepObj <- c('gwas_tcx_cov','gwas_cere_cov','cere_cov','tcx_cov','mayo_egwas_cere_data','mayo_egwas_tcx_data')
 
-#mayo_gwas_tcx_cov <- gwas_cov[gwas_cov$IID%in%tcx_cov$IID,]
+#remove non-essential data frames
+rm(list=ls()[!ls()%in%keepObj])
+gc()
 
+#save data
 save.image(file='mayoEGWASdata.rda')
 
 #run plink command to filter genotypes based on shared ids
