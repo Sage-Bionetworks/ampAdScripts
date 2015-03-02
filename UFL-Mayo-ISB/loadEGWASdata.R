@@ -20,7 +20,3 @@ mayo_geno_cere_22 <- mayo_geno_cere_22[reorderGenotypes(cere_cov$IID,mayo_geno_c
 
 
 
-#run simple trans eQTL analyses
-
-
-
