@@ -27,11 +27,12 @@ egwas_tcx_cov <- synGet('syn3256508',downloadLocation='./')
 cere_cov <- read.csv(egwas_cere_cov@filePath,header=T)
 tcx_cov <- read.csv(egwas_tcx_cov@filePath,header=T)
 gwas_cov <- read.csv(gwas_cov@filePath,header=T)
-
+cere_keep <- cere_cov$IID%in%gwas_cov$IID
+tcx_keep <- tcx_cov$IID%in%gwas_cov$IID
 
 #write ids
-write.table(cere_cov[,1:2],file='cerebellumIds.txt',sep=' ',quote=F,row.names=F,col.names=F)
-write.table(tcx_cov[,1:2],file='temporalcortexIds.txt',sep=' ',quote=F,row.names=F,col.names=F)
+write.table(cere_cov[cere_keep,1:2],file='cerebellumIds.txt',sep=' ',quote=F,row.names=F,col.names=F)
+write.table(tcx_cov[tcx_keep,1:2],file='temporalcortexIds.txt',sep=' ',quote=F,row.names=F,col.names=F)
 
 save.image(file='mayoEGWASdata.rda')
 
