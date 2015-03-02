@@ -40,7 +40,7 @@ getPubList <- function(searchUrl) {
     
     # Get the publication title
     article.data <- as.character(xmlToDataFrame(getNodeSet(testDoc, "//ArticleTitle"))[1,1])
-                                    
+    
     # Get the journal info
     journal.data <- as.character(xmlToDataFrame(getNodeSet(testDoc, "//Journal//Title"))[1,1], homogeneous=FALSE)
     
@@ -48,7 +48,7 @@ getPubList <- function(searchUrl) {
     volume.data <- as.character(xmlToDataFrame(getNodeSet(testDoc, "//Volume"))[1,1], homogeneous=FALSE)
     volume.data <- ifelse(length(volume.data) > 0, volume.data, "")
     
-    issue.data <- as.character(xmlToDataFrame(getNodeSet(testDoc, "//Issue"))[1,1])
+    issue.data <- as.character(xmlToDataFrame(getNodeSet(testDoc, "//Issue"))[[1]])
     issue.data <- ifelse(length(issue.data) > 0, issue.data, "")
     
     # There was an issue with some pagination annotation in xml (e.g., node marked as <MedlinePgn/> )
