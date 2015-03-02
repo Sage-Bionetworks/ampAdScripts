@@ -4,10 +4,10 @@
 #Author: Benjamin A Logsdon (ben.logsdon@sagebase.org)
 
 #REQUIREMENTS:
-#Synapse R client (link)
-#Synapse account (link)
-#Data access approval to MayoLOADGWAS data (link)
-#Data access approval to MayoEGWAS data (link)
+#Synapse R client (https://www.synapse.org/#!Synapse:syn1834618)
+#Synapse account (https://www.synapse.org/#!RegisterAccount:0)
+#Data access approval to MayoLOADGWAS data (https://www.synapse.org/#!Synapse:syn2954402)
+#Data access approval to MayoEGWAS data (https://www.synapse.org/#!Synapse:syn2910255)
 
 echo "Download data from Synapse"
 Rscript grabMayoEGWASdata.R
