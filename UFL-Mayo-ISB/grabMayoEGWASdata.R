@@ -26,13 +26,17 @@ egwas_tcx_cov <- synGet('syn3256508',downloadLocation='./')
 #read in covariate files
 cere_cov <- read.csv(egwas_cere_cov@filePath,header=T)
 tcx_cov <- read.csv(egwas_tcx_cov@filePath,header=T)
+gwas_cov <- read.csv(gwas_cov@filePath,header=T)
+
 
 #write ids
 write.table(cere_cov[,1:2],file='cerebellumIds.txt',sep=' ',quote=F,row.names=F,col.names=F)
 write.table(tcx_cov[,1:2],file='temporalcortexIds.txt',sep=' ',quote=F,row.names=F,col.names=F)
 
+save.image(file='mayoEGWASdata.rda')
+
 #run plink command to filter genotypes based on shared ids
-system('./')
+#system('../extractIndividuals.sh')
 
 #read in genotypes into R
 
