@@ -28,7 +28,8 @@ synSetAnnotations(b) <- dataAnnotation;
 
 act <- Activity(name='ROSMAP Sample ID Key Migration',
                 used=list(list(entity=rosmapTable@values$originalSynapseId[i],wasExecuted=F)),
-                executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Rush-Broad/mergeAndMigrateSampleKey.R"))
+                executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Broad-Rush/mergeAndMigrateSampleKey.R"))
+
 act <- storeEntity(act)
 generatedBy(b) <- act
 b <- synStore(b)
