@@ -5,8 +5,14 @@ synapseLogin()
 #mayoTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'mayo%\' and migrator=\'Ben\' and toBeMigrated=TRUE',loadResult = TRUE)
 splitCovariates <- function(synObj,clinicalFileName,expressionFileName){
   res <- read.table(synObj@filePath,header=T)
-  write.csv(res[,1:13],file=clinicalFileName,row.names=F,quote=F)
-  write.csv(res[,-c(3:13)],file=expressionFileName,row.names=F,quote=F)
+  if(length(grep('TX_ALL.txt',synObj@filePath))>0){
+    write.csv(res[,1:12],file=clinicalFileName,row.names=F,quote=F)
+    write.csv(res[,-c(3:12)],file=expressionFileName,row.names=F,quote=F)    
+  }else{
+    write.csv(res[,1:13],file=clinicalFileName,row.names=F,quote=F)
+    write.csv(res[,-c(3:13)],file=expressionFileName,row.names=F,quote=F)    
+  }
+
 }
 
 
@@ -67,7 +73,7 @@ migrateMayoArray <- function(i,newExpressionFileName,newExpressionEntityName,new
 
 migrateMayoArray(1,'AMP-AD_MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_Cerebellum.csv','MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_Cerebellum','AMP-AD_MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_Cerebellum_Covariates.csv','MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_Cerebellum_Covariates',tissueType = 'Cerebellum')
 
-migrateMayoArray(2,'AMP-AD_MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_TemporalCortex.csv','MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_TemporalCortex','AMP-AD_MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_TemporalCortex_Covariates.csv','MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_TemporalCortex_Covariates',tissueType = 'Temporal Cortex')
+migrateMayoArray(2,'AMP-AD_MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_TemporalCortex_Updated.csv','MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_TemporalCortex_Updated','AMP-AD_MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_TemporalCortex_Covariates_Updated.csv','MayoEGWAS_UFL-Mayo-ISB_IlluminaWholeGenomeDASL_TemporalCortex_Covariates_Updated',tissueType = 'Temporal Cortex')
 
 
 

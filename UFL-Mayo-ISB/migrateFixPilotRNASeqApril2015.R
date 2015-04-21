@@ -5,7 +5,7 @@ synapseLogin()
 
 migrateMayoRNAseqUpdate <- function(i){
   mayoTable <- synTableQuery('SELECT * FROM syn3163713 where data like \'Mayo%RNAseq\' and migrator=\'Ben\' and toBeMigrated=TRUE and isMigrated=FALSE',loadResult = TRUE)
-  testSyn <- synGet(mayoTable@values$originalSynapseId[i],downloadFile = F)
+  testSyn <- synGet(mayoTable@values$originalSynapseId[i])
   synName <- synGetProperties(testSyn)$name
   
   #define disease
@@ -76,7 +76,7 @@ migrateMayoRNAseqUpdate <- function(i){
   system(paste('cp ',testSyn@filePath,' ',fileName,sep=''))
   
   b <- File(fileName,parentId=mayoTable@values$newParentId[i],name=entityName)
-  synSetAnnotations<-(b) <- dataAnnotation
+  synSetAnnotations(b) <- dataAnnotation
   
   act <- Activity(name='Mayo Pilot RNAseq Data Migration',
                   used=list(list(entity=mayoTable@values$originalSynapseId[i],wasExecuted=F)),
@@ -91,10 +91,14 @@ migrateMayoRNAseqUpdate <- function(i){
     mayoTable@values$newSynapseId[wind] <- ''
   }
   mayoTable@values$newFileName[i] <- ''
-  mayoTable@values$isMigrated[i] <- TRUE
+  #mayoTable@values$isMigrated[i] <- TRUE
   mayoTable@values$hasAnnotation[i] <- TRUE
   mayoTable@values$hasProvenance[i] <- TRUE
   mayoTable <- synStore(mayoTable)
   system(paste0('rm ',fileName))  
   
 }
+
+require(dplyr)
+
+sapply(1:10,migrateMayoRNAseqUpdate)
