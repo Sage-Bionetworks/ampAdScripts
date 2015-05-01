@@ -34,21 +34,18 @@ generateAnnotations <- function(parsedNames){
   return(res)
 }
 
-
-Activity(name='UFL Tau RNAseq Data Migration',
-         used=list(list(entity=mayoTable@values$originalSynapseId[i],wasExecuted=F)),
-         executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/UFL-Mayo-ISB/migrateUFLTauFeb2015.R"))
-
 generateProvenance <- function(){
   require(synapseClient)
   act <- Activity(name='HBTRC Genotype Imputation',
                   used=list(list(entity='syn3169561',wasExecuted=F),list(entity='syn3169563',wasExecuted=F),list(entity='syn3169565',wasExecuted=F)),
-                  executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/"))
+                  executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Mount-Sinai/updateImputedData.R"))
+  act <- storeEntity(act)
+  return(act)
 }
 
 
 newNames <- generateNewName(parsedNames)
 newAnnotations <- generateAnnotations(parsedNames)
-  
+newProvenance <- generateProvenance()
 
 
