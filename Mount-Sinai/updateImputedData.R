@@ -43,9 +43,21 @@ generateProvenance <- function(){
   return(act)
 }
 
+pushToSynapse <- function(id,name,annotation,provenance){
+  #get file
+  synObj <- synGet(id);
+  #copy file to new name
+  system(paste0('cp ',synObj@filePath,' ./',name))
+  newSynObj <- File(path=paste0('./',name),parentId='syn3854454')
+  synSetAnnotations(newSynObj) <- annotation
+  generatedBy(newSynObj) <- provenance
+  newSynObj <- synStore(newSynObj)
+}
 
 newNames <- generateNewName(parsedNames)
 newAnnotations <- generateAnnotations(parsedNames)
 newProvenance <- generateProvenance()
 
-
+for (i in 1:length(newNames)){
+    pushToSynapse(imputedFiles$file.id[i],newNames[i],newAnnotations[[i]],newProvenance)
+}
