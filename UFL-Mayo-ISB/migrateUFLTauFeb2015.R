@@ -14,7 +14,7 @@ migrateTau <- function(i,newFileName,newEntityName,other){
     center = 'UFL-Mayo-ISB',
     study = 'TAUAPPms',
     fileType = 'tsv',
-    organism = 'mouse',
+    organism = 'Mus musculus',
     other = other
   )
   synSetAnnotations(b) <- dataAnnotation
@@ -40,9 +40,9 @@ migrateTau <- function(i,newFileName,newEntityName,other){
 migrateTau(2,'AMP-AD_TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts.txt.gz','TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts',other=c('geneCounts','Unnormalized'))
 migrateTau(3,'AMP-AD_TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts.txt.gz','TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts',other=c('transcriptCounts','Unnormalized'))
 migrateTau(4,'AMP-AD_TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts_Normalized.txt.gz','TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts_Normalized',other=c('geneCounts','Normalized'))
-migrateTau(5,'AMP-AD_TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts_Transposed.txt.gz','TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts_Transposed',other=c('geneCounts','Unnormalized','Transposed'))
+migrateTau(5,'AMP-AD_TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts_Transposed_Updated.txt.gz','TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_GeneCounts_Transposed_Updated',other=c('geneCounts','Unnormalized','Transposed'))
 migrateTau(6,'AMP-AD_TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Normalized.txt.gz','TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Normalized',other=c('geneCounts','Normalized'))
-migrateTau(7,'AMP-AD_TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Transposed.txt.gz','TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Transposed',other=c('geneCounts','Unnormalized','Transposed'))
+migrateTau(7,'AMP-AD_TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Transposed_Updated.txt.gz','TAUAPPms_UFL-Mayo-ISB_IlluminaHiSeq2000_Tau_TranscriptCounts_Transposed_Updated',other=c('geneCounts','Unnormalized','Transposed'))
 
 
 #covariates
@@ -64,7 +64,7 @@ dataAnnotation <- list(
   center = 'UFL-Mayo-ISB',
   study = 'TAUAPPms',
   fileType = 'csv',
-  organism = 'mouse'
+  organism = 'Mus musculus'
 )
 synSetAnnotations(b) <- dataAnnotation
 act <- Activity(name='UFL Tau RNAseq Data Migration',
