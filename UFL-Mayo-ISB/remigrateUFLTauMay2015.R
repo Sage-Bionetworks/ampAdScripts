@@ -25,12 +25,12 @@ pushUpdatedTauFile <- function(i,partnerId,metaId,isCovariate=NULL){
                   executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/UFL-Mayo-ISB/remigrateUFLTauMay2015.R"))
   act <- storeEntity(act)
   generatedBy(synNewObj) <- act
-  synSetAnnotations(synNewObj) <- annotations2
+  synSetAnnotations(synNewObj) <- as.list(annotations2)
   synNewObj <- synStore(synNewObj)
 
   #update table.
 
-  wind <- is.na(mayoTable@values$newSynapseId)
+  wind <- is.na(uflTable@values$newSynapseId)
   if(sum(wind)>0){
     uflTable@values$newSynapseId[wind] <- ''
   }
@@ -38,7 +38,7 @@ pushUpdatedTauFile <- function(i,partnerId,metaId,isCovariate=NULL){
   uflTable@values$isMigrated[i] <- TRUE
   uflTable@values$hasAnnotation[i] <- TRUE
   uflTable@values$hasProvenance[i] <- TRUE
-  uflTable <- synStore(mayoTable)
+  uflTable <- synStore(uflTable)
   
 }
 partnerIdVec <- c('syn3909702','syn3910122','syn3910325','syn3910523','syn3910665')
