@@ -35,7 +35,7 @@ synFile <- synGet(files$file.id[1],downloadFile = F)
 synSetAnnotations(synFile) <- baseAnnotations
 
 #finally, we push the metadata about the file back to Synapse
-synFile <- synStore(synFile)
+synFile <- synStore(synFile,forceVersion=T)
 
 #this should be repeated for all the files as necessary, except you may need to change certain annotations e.g. 
 
@@ -49,10 +49,11 @@ rawfiles <- synQuery(paste0('select name,id from file where parentId==\'',parent
 
 act <- Activity(name='Produce Processed Count File',
                 used=as.list(rawfiles$file.id),
-                executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Emory/migrateEmoryFeb2015.R"))
+                executed=list("https://github.com/Sage-Bionetworks/ampAdScripts/blob/master/Emory/addAnnotationsProvenanceBLSA.R"))
 act <- storeEntity(act)
-generatedBy(b) <- act
-b <- synStore(b)
+generatedBy(synFile) <- act
+
+synFile <- synStore(synFile,forceVersion=T)
 
 
 
