@@ -28,14 +28,14 @@ baseAnnotation<- list(
 #next we set the annotations to reflect each file
 #to do so we first grab the file, but do not download it
 
-synFile <- synGet(files$file.id[1],downloadFile = F)
+synFile <- synGet(files$file.id[1],downloadFile = FALSE)
 
 
 #next, we set the annotations we defined above to the file:
 synSetAnnotations(synFile) <- baseAnnotations
 
 #finally, we push the metadata about the file back to Synapse
-synFile <- synStore(synFile,forceVersion=T)
+synFile <- synStore(synFile,forceVersion=FALSE)
 
 #this should be repeated for all the files as necessary, except you may need to change certain annotations e.g. 
 
@@ -53,10 +53,9 @@ act <- Activity(name='Produce Processed Count File',
 act <- storeEntity(act)
 generatedBy(synFile) <- act
 
-synFile <- synStore(synFile,forceVersion=T)
+#feel free to add any synapse ids for additional files that were used to the 'used' parameter in the call to the Activity function.  
 
-
-
+synFile <- synStore(synFile,forceVersion=FALSE)
 
 #files in Methods sub folder
 #one can easily do this for files in the Methods folder as well:
