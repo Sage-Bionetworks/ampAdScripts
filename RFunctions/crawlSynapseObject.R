@@ -1,7 +1,7 @@
 ###function to crawl directory structure and return the structure
 crawlSynapseObject <- function(synId,G=NULL){
   #depth first search
-  source('adjacentEdges.R')
+  #source('adjacentEdges.R')
   result <- adjacentEdges(synId);
   while(!is.null(result)){
     #add new nodes to graph if necessary
