@@ -27,3 +27,50 @@ synLinks <- populateNewDirectory2('syn2920322',synObj,topId='syn2920322')
 synObj <- crawlSynapseObject('syn3800853')
 synObj <- makeHeadFolder(synObj,'syn3800853')
 synLinks <- populateNewDirectory2('syn2700793',synObj,topId='syn2700793')
+
+##Broad MDMi data
+synObj <- crawlSynapseObject('syn3607404')
+synObj <- makeHeadFolder(synObj,'syn3607404')
+mdmiF <- synGet('syn3607404',downloadFile=F)
+anno <- synGetAnnotations(mdmiF)
+mdmi <- synGet('syn3607432',downloadFile=F)
+synSetAnnotations(mdmi)<- as.list(anno)
+mdmi <- synStore(mdmi,forceVersion=F)
+mdmi <- synGet('syn3607433',downloadFile=F)
+synSetAnnotations(mdmi)<- as.list(anno)
+mdmi <- synStore(mdmi,forceVersion=F)
+
+synLinks <- populateNewDirectory2('syn2397884',synObj,topId='syn2397884')
+
+##Broad iPSC data
+synObj <- crawlSynapseObject('syn3607401')
+synObj <- makeHeadFolder(synObj,'syn3607401')
+
+mdmiF <- synGet('syn3607401',downloadFile=F)
+anno <- synGetAnnotations(mdmiF)
+mdmi <- synGet('syn3607402',downloadFile=F)
+synSetAnnotations(mdmi)<- as.list(anno)
+mdmi <- synStore(mdmi,forceVersion=F)
+mdmi <- synGet('syn3607403',downloadFile=F)
+synSetAnnotations(mdmi)<- as.list(anno)
+mdmi <- synStore(mdmi,forceVersion=F)
+
+synLinks <- populateNewDirectory2('syn2397884',synObj,topId='syn2397884')
+
+##Broad miRNA data
+mirnaf <- synGet('syn3387325',downloadFile=F)
+anno <- synGetAnnotations(mirnaf)
+mirna <- synGet('syn3387327',downloadFile=F)
+synSetAnnotations(mirna) <- as.list(anno)
+mirna <- synStore(mirna,forceVersion=F)
+
+synObj <- crawlSynapseObject('syn3387325')
+synObj <- makeHeadFolder(synObj,'syn3387325')
+synLinks <- populateNewDirectory2('syn2700793',synObj,topId='syn2700793')
+
+##HBTRC imputed genotype data
+synObj <- crawlSynapseObject('syn3981980')
+synObj <- makeHeadFolder(synObj,'syn3981980')
+synLinks <- populateNewDirectory2('syn3104310',synObj,topId='syn3104310')
+
+##move apoe genotypes
