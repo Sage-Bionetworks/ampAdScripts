@@ -92,3 +92,21 @@ synObj <- synStore(synObj)
 synObj <- crawlSynapseObject('syn4055270')
 synObj <- makeHeadFolder(synObj,'syn4055270')
 synLinks <- populateNewDirectory2('syn3104300',synObj,topId='syn3104310')
+
+
+##move ROSMAP rna-seq data
+synObj <- crawlSynapseObject('syn3388564')
+headFolder <- synGet('syn3388564',downloadFile = F)
+anno <- synGetAnnotations(headFolder)
+rnaExprSyn <- names(which(synObj$adj[1,]!=0)[1:6])
+#add annotations to rnaseq files
+lapply(rnaExprSyn,function(x,anno){ob<-synGet(x,downloadFile=F);synSetAnnotations(ob)<-as.list(anno);ob <- synStore(ob,forceVersion=F);},anno)
+anno <- as.list(anno)
+anno$dataSubType <- NULL
+anno$dataType <- "metaData"
+#add annotations to picard files
+metricFile <- c(names(which(synObj$adj[10,]!=0)),'syn4299317')
+lapply(metricFile,function(x,anno){ob<-synGet(x,downloadFile=F);synSetAnnotations(ob)<-as.list(anno);ob <- synStore(ob,forceVersion=F);},anno)
+
+#
+synObj <- makeHeadFolder(synObj,'syn3388564')
