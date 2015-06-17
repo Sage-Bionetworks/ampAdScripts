@@ -110,3 +110,5 @@ lapply(metricFile,function(x,anno){ob<-synGet(x,downloadFile=F);synSetAnnotation
 
 #
 synObj <- makeHeadFolder(synObj,'syn3388564')
+synLinks <- populateNewDirectory2('syn2700793',synObj,topId='syn2700793')
+
