@@ -74,3 +74,21 @@ synObj <- makeHeadFolder(synObj,'syn3981980')
 synLinks <- populateNewDirectory2('syn3104310',synObj,topId='syn3104310')
 
 ##move apoe genotypes
+#move broad-rush covariates
+synObj <- File('~/Desktop//AMP-AD_ROSMAP_Myers-RUSH-NIAGADS_Covariates.csv',parentId='syn3800853')
+anno <- list(center='Myers-NIAGADS',
+             dataType='Covariates',
+             consortium='AMP-AD',
+             fileType='csv',
+             study='ROSMAP',
+             disease='Alzheimers Disease, Control',
+             organism='Homo Sapiens')
+
+synSetAnnotations(synObj) <- anno
+synObj <- synStore(synObj)
+
+#move .bam files
+
+synObj <- crawlSynapseObject('syn4055270')
+synObj <- makeHeadFolder(synObj,'syn4055270')
+synLinks <- populateNewDirectory2('syn3104300',synObj,topId='syn3104310')
