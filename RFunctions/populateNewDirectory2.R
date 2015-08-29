@@ -38,6 +38,7 @@ populateNewDirectory2 <- function(synId,G,Q=NULL,topId){
         }else if (G$type[e[i]]=='org.sagebionetworks.repo.model.FileEntity'){
           #moveFile(e[i],Q$newid[synId]);
           #makeLink(G$name[e[i]],e[i],synId)
+          #makeLink(G$name[e[i]],e[i],synId)
           w1 <- which(Q$adj[,Q$newid[e[i]]]==1)
           print(Q$newid[w1])
           makeLink(G$name[e[i]],e[i],Q$newid[w1])
