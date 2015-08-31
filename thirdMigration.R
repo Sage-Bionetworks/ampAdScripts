@@ -271,3 +271,11 @@ synObj <- crawlSynapseObject(internalFolder)
 synObj <- makeHeadFolder(synObj,internalFolder)
 synLinks <- populateNewDirectory2(internalParentFolder,synObj,topId=internalParentFolder)
 onWeb(internalParentFolder)
+
+#Mayo TLR4/5 data, 2015 data
+tlrFilesToMove <- c('syn4921575','syn4885786','syn4885784')
+newFolderId <- 'syn3157242'
+
+temp <- sapply(tlrFilesToMove,moveFile,newFolderId)
+onWeb(newFolderId)
+
