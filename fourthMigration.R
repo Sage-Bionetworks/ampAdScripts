@@ -1,6 +1,3 @@
-#leave some breadcrumbs...
-
-#mayo rnaseq
 source('RFunctions/populateNewDirectory2.R')
 source('RFunctions/makeNewFolder.R')
 source('RFunctions/makeLink.R')
@@ -11,10 +8,45 @@ source('RFunctions/adjacentEdges.R')
 source('RFunctions/moveSingleFile.R')
 source('Rfunctions/moveFolder2.R')
 source('Rfunctions/reverseLink.R')
-
-
 require(synapseClient)
-######Mount Sinai RNA-seq Human
+
+
+###Emory Data
+
+#Emory samples
+#analysis folder: syn5297557
+#raw file folder: syn5224100
+
+#UPenn samples
+#analysis folder: syn5297560
+#raw file folder: syn5269001
+
+###Broad-Rush
+#######chip-seq
+#raw data: syn4896408
+#sample file: syn5218321
+#need to merge chipseq/rest samples into combined sample file
+
+###Mount Sinai School of Medicine
+#WES BAMs/Reads: syn5012301
+#MSMM: syn5053455
+#MSDM BAMs: syn5012222, syn5012145
+#MSSM samples sequenced at Mayo: syn3537577
+#missing: new samples RNAseq/WES,merged clinical file.
+
+###UFL-Mayo-ISB
+#Mayo RNA-seq, Cerebellum: syn5049298
+#Mayo samples sequenced at MSSM: syn5203272
+
+###Harvard-MIT
+#ROSMAP REST samples: syn4988746
+
+###Lilly
+#mouse microglial data: syn4883033
+
+
+
+######Mount Sinai
 ##count file
 fileId <- 'syn4615144'
 newFolderId <- 'syn3157743'
@@ -278,4 +310,3 @@ newFolderId <- 'syn3157242'
 
 temp <- sapply(tlrFilesToMove,moveFile,newFolderId)
 onWeb(newFolderId)
-
