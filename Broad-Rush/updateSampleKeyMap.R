@@ -1,7 +1,16 @@
 ###script to update the sample key files
 
+
+######migrate new data file
+require(gdata)
+
 require(synapseClient)
 synapseLogin()
+foo <- synGet('syn5218321')
+
+bar <- read.xls(foo@filePath)
+bar[1:5,]
+
 #get current sample Key
 currentKeyObj <- synGet('syn3382527')
 
