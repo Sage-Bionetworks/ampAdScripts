@@ -9,7 +9,17 @@ synapseLogin()
 foo <- synGet('syn5218321')
 
 bar <- read.xls(foo@filePath)
-bar[1:5,]
+bar$age_first_ad_dx[bar$age_first_ad_dx>=90] <- '90+'
+bar$age_death[bar$age_death>=90] <- '90+'
+bar$age_at_visit_max[bar$age_at_visit_max>=90] <- '90+'
+
+write.csv(bar,file='AMP-AD_ROSMAP_Rush-Broad_Clinical.csv',quote=F)
+foo <- synGet('syn3191087',downloadFile=F)
+foo@filePath='./AMP-AD_ROSMAP_Rush-Broad_Clinical.csv'
+
+
+
+#news
 
 #get current sample Key
 currentKeyObj <- synGet('syn3382527')
