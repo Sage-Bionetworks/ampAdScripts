@@ -184,7 +184,7 @@ moveFolder2(internalFolder,publicFolder)
 onWeb(publicFolder)
 synObj <- crawlSynapseObject(internalFolder)
 synObj <- makeHeadFolder(synObj,internalFolder)
-synLinks <- populateNewDirectory2(internalParentFolder,synObj,topId=internalParentFolder)
+synLinks <- populateNewDirectory2('syn3104300',synObj,topId='syn3104300')
 onWeb(internalParentFolder)
 
 
