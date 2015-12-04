@@ -4,5 +4,5 @@ moveSingleFile <- function(synId,newParentId){
   oldParentId <- synGetProperties(foo)$parentId
   fileName <- synGetProperties(foo)$name
   moveFile(synId,newParentId)
-  makeLink(fileName,synId,oldParentId)
+  makeLink(synId,oldParentId,linkName=fileName)
 }
