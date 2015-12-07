@@ -291,3 +291,23 @@ newFolderId <- 'syn5478323'
 onWeb(fileId)
 onWeb(newFolderId)
 moveSingleFile(fileId,newFolderId)
+
+
+
+
+
+#####plink files
+internalFolder <- 'syn4913874'
+internalParentFolder <- 'syn4913873'
+publicFolder <- 'syn4645334'
+
+onWeb(internalFolder)
+onWeb(internalParentFolder)
+onWeb(publicFolder)
+moveFolder2(internalFolder,publicFolder)
+onWeb(publicFolder)
+synObj <- crawlSynapseObject(internalFolder)
+synObj <- makeHeadFolder(synObj,internalFolder)
+synLinks <- populateNewDirectory2(internalParentFolder,synObj,topId=internalParentFolder)
+onWeb(internalParentFolder)
+
