@@ -199,11 +199,36 @@ uniqueFields$fixFieldState[27] <- 'platform'
 
 uniqueFieldsAll <- anno %>% lapply(names)
 normalizationTest <- sapply(uniqueFieldsAll,function(x,y){return(y%in%x)},'normalization')
+centercenterTest <- sapply(uniqueFieldsAll,function(x,y){return(y%in%x)},'centercenter')
 tissueTest <- sapply(uniqueFieldsAll,function(x,y){return(y%in%x)},'tissue')
 anno[which(normalizationTest)]
 sapply(anno[which(tissueTest)],function(x){return(x[['tissue']])})
+
+
+
+
+
 #get all unique values
-uniqueValues <- sapply(anno,getUniqueValues)
+uniqueValues <-anno %>%
+                unlist %>%
+                c %>%
+                unique
+
+dictionaryValues <- dictionary %>%
+                    unlist %>%
+                    c %>%
+                    unique
+
+
+toFix <- !uniqueValues%in%dictionaryValues
+
+uniqueValues <- data.frame(uniqueValues=uniqueValues,
+                           toFix=toFix,
+                           stringsAsFactors = F)
+
+uniqueValues$fixValueState <- rep(NA,nrow(uniqueValues))
+uniqueValues$fixValueState[uniqueValues$toFix==TRUE] <- ''
+
 #build a mapping table for fields
 
 #build a mapping table for values
