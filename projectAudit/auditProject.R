@@ -47,6 +47,7 @@ dictionary <- lapply(uniqueFields,listify,dictionaryObj@values$value,dictionaryO
 names(dictionary) <- uniqueFields
 
 
+
 #Consortium
 #Center
 #Study
@@ -118,6 +119,91 @@ table<-Table(schema, fileHandleId)
 table<-synStore(table, retrieveData=TRUE)
 
 write.csv(annotationAuditDataFrame,file='annotationAuditDecember2015.csv',quote=F,row.names=F)
+require(dplyr)
+annotationAuditFolderSummary <- dplyr::filter(annotationAuditDataFrame,entityType=='Folder') %>%
+  dplyr::select(synapseID)
+
+annotationAuditFolderSummary$meanChildFilehasAnnotation <- rep(NA,nrow(annotationAuditFolderSummary))
+annotationAuditFolderSummary$totalChildFilehasAnnotation <- rep(NA,nrow(annotationAuditFolderSummary))
+annotationAuditFolderSummary$meanhasMinimumNecessaryAnnotations <- rep(NA,nrow(annotationAuditFolderSummary))
+annotationAuditFolderSummary$totalhasMinimumNecessaryAnnotations <- rep(NA,nrow(annotationAuditFolderSummary))
+annotationAuditFolderSummary$meanDictionaryErrors <- rep(NA,nrow(annotationAuditFolderSummary))
+annotationAuditFolderSummary$totalDictionaryErrors <- rep(NA,nrow(annotationAuditFolderSummary))
+
+#minimum necessary
+#Consortium
+#Center
+#Study
+#Disease
+#Assay
+#File Type
+#Model System
+#Tissue Type
+#Organism
+
+
+rownames(annotationAuditDataFrame) <- annotationAuditDataFrame$synapseID
+for (i in 1:nrow(annotationAuditFolderSummary)){
+  children <- foo$adjList[[annotationAuditFolderSummary$synapseID[i]]]
+  if(length(children)>0){
+    entityTypes <- foo$type[foo$id%in%children] 
+    w1 <- which(entityTypes=='org.sagebionetworks.repo.model.FileEntity')
+    if(length(w1)>0){
+      #print(children[w1])
+      #print(annotationAuditDataFrame[children[w1],3])
+      annotationAuditFolderSummary$meanChildFilehasAnnotation[i] <- mean(annotationAuditDataFrame[children[w1],3])
+      annotationAuditFolderSummary$totalChildFilehasAnnotation[i] <- sum(annotationAuditDataFrame[children[w1],3])
+      annotationAuditFolderSummary$meanhasMinimumNecessaryAnnotations[i] <- annotationAuditDataFrame[children[w1],] %>% dplyr::select(hasconsortium,hascenter,hasstudy,hasdisease,hasassay,hasfileType,hasmodelSystem,hastissueType,hasorganism) %>%as.matrix %>% mean(na.rm=T)
+      
+      #annotationAuditDataFrame[children[w1],] %>% dplyr::select(hasconsortium,hascenter,hasstudy,hasdisease,hasassay,hasfileType,hasmodelSystem,hastissueType,hasorganism) %>% print
+      annotationAuditFolderSummary$totalhasMinimumNecessaryAnnotations[i] <- annotationAuditDataFrame[children[w1],] %>% dplyr::select(hasconsortium,hascenter,hasstudy,hasdisease,hasassay,hasfileType,hasmodelSystem,hastissueType,hasorganism) %>%as.matrix %>% sum(na.rm=T)
+      annotationAuditFolderSummary$meanDictionaryErrors[i] <- (!annotationAuditDataFrame[children[w1],25:43]) %>%as.matrix %>% mean(na.rm=T)
+      annotationAuditFolderSummary$totalDictionaryErrors[i] <- (!annotationAuditDataFrame[children[w1],25:43]) %>%as.matrix %>% sum(na.rm=T)      
+    }
+  }
+}
+
+annotationAuditFolderSummary <- dplyr::filter(annotationAuditFolderSummary,!is.na(meanChildFilehasAnnotation))
+
+
+tcresult<-as.tableColumns(annotationAuditFolderSummary)
+cols<-tcresult$tableColumns
+fileHandleId<-tcresult$fileHandleId
+projectId<-"syn2397881"
+schema<-TableSchema(name="AMP AD Audit Folder Summaries", parent=projectId, columns=cols)
+table<-Table(schema, fileHandleId)
+table<-synStore(table, retrieveData=TRUE)
+
+require(dplyr)
+#get all unique fields
+#uniqueFields <- unique(c(unlist(lapply(anno,names))))
+uniqueFields <- anno %>% 
+                lapply(names) %>% 
+                unlist %>%
+                c %>%
+                unique
+
+toFix <- !uniqueFields%in%names(dictionary)
+uniqueFields <- data.frame(uniqueFields=uniqueFields,toFix=toFix,stringsAsFactors=F)
+uniqueFields$fixFieldState <- rep(NA,nrow(uniqueFields))
+
+
+
+
+
+#get all unique values
+uniqueValues <- sapply(anno,getUniqueValues)
+#build a mapping table for fields
+
+#build a mapping table for values
+
+#apply the mapping table for fields
+
+#apply the mapping table for values
+
+#generate an R markdown with pie chart
+
+
 
 ##cross reference annotations with dictionary
 ##return errors for cases where annotations and dictionary are inconsistent
