@@ -174,61 +174,8 @@ schema<-TableSchema(name="AMP AD Audit Folder Summaries", parent=projectId, colu
 table<-Table(schema, fileHandleId)
 table<-synStore(table, retrieveData=TRUE)
 
-require(dplyr)
-#get all unique fields
-#uniqueFields <- unique(c(unlist(lapply(anno,names))))
-uniqueFields <- anno %>% 
-                lapply(names) %>% 
-                unlist %>%
-                c %>%
-                unique
-
-toFix <- !uniqueFields%in%names(dictionary)
-toFix[1] <- FALSE
-uniqueFields <- data.frame(uniqueFields=uniqueFields,toFix=toFix,stringsAsFactors=F)
-uniqueFields$fixFieldState <- rep(NA,nrow(uniqueFields))
-uniqueFields$fixFieldState[uniqueFields$toFix==TRUE] <- ''
-uniqueFields$fixFieldState[22] <- 'study'
-uniqueFields$fixFieldState[23] <- 'center'
-uniqueFields$fixFieldState[29] <- 'center'
-uniqueFields$fixFieldState[18] <- 'normalizationStatus'
-uniqueFields$fixFieldState[25] <- 'cellType'
-uniqueFields$fixFieldState[27] <- 'platform'
-
-
-
-uniqueFieldsAll <- anno %>% lapply(names)
-normalizationTest <- sapply(uniqueFieldsAll,function(x,y){return(y%in%x)},'normalization')
-centercenterTest <- sapply(uniqueFieldsAll,function(x,y){return(y%in%x)},'centercenter')
-tissueTest <- sapply(uniqueFieldsAll,function(x,y){return(y%in%x)},'tissue')
-anno[which(normalizationTest)]
-sapply(anno[which(tissueTest)],function(x){return(x[['tissue']])})
-
-
-
-
-
-#get all unique values
-uniqueValues <-anno %>%
-                unlist %>%
-                c %>%
-                unique
-
-dictionaryValues <- dictionary %>%
-                    unlist %>%
-                    c %>%
-                    unique
-
-
-toFix <- !uniqueValues%in%dictionaryValues
-
-uniqueValues <- data.frame(uniqueValues=uniqueValues,
-                           toFix=toFix,
-                           stringsAsFactors = F)
-
-uniqueValues$fixValueState <- rep(NA,nrow(uniqueValues))
-uniqueValues$fixValueState[uniqueValues$toFix==TRUE] <- ''
-
+require(knit2synapse)
+knitfile2synapse('quickOverallReport.Rmd', owner='syn5558028')
 #build a mapping table for fields
 
 #build a mapping table for values
@@ -243,3 +190,9 @@ uniqueValues$fixValueState[uniqueValues$toFix==TRUE] <- ''
 
 ##cross reference annotations with dictionary
 ##return errors for cases where annotations and dictionary are inconsistent
+
+
+#rosmap specific errors
+SELECT * FROM syn5558022 where synapseID='syn3607404' or synapseID='syn4228560' or synapseID='syn3607401' or synapseID='syn4228582' or synapseID='syn3157275' or synapseID='syn4896408' or synapseID='syn5477198' or synapseID='syn3388564' or synapseID='syn4164376' or synapseID='syn4299317' or synapseID='syn3800853' or synapseID='syn3157322' or synapseID='syn3157325' or synapseID='syn3157329' or synapseID='syn3387325'
+
+secondFullAudit@values$synapseID
