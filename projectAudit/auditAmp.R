@@ -256,3 +256,50 @@ auditV<-lapply(synId,synapseUtilities::auditSingleFile,'syn5478487')
 auditV
 lapply(synId,synapseUtilities::updateAnnotations,c('consortium','modelSystem','assay'),c('AMP-AD','FALSE','RNAseq'))
 
+
+######################restart Mayo######################
+crawledMayoLoadGwas <- synapseUtilities::crawlProject('syn5591675')
+crawledMayoRNAseq <- synapseUtilities::crawlProject('syn5550404')
+
+
+synapseUtilities::auditProject(crawledMayoLoadGwas,'syn5478487','syn2397881',auditName = 'AMP AD Audit Mayo LOAD GWAS')
+synapseUtilities::auditSummaryByFolder(crawledMayoLoadGwas,'syn5594710','syn2397881',summaryName = 'AMP AD Mayo LOAD GWAS Summary')
+
+synapseUtilities::auditProject(crawledMayoRNAseq,'syn5478487','syn2397881',auditName = 'AMP AD Audit Mayo RNAseq')
+synapseUtilities::auditSummaryByFolder(crawledMayoRNAseq,'syn5594853','syn2397881',summaryName = 'AMP AD Mayo LOAD RNAseq Summary')
+
+synId='syn3256501'
+auditV<-synapseUtilities::auditSingleFile(synId,'syn5478487')
+auditV
+synapseUtilities::updateAnnotations(synId,c('assay','modelSystem'),c('arrayExpression','FALSE'),'disease')
+
+synId='syn3256502'
+auditV<-synapseUtilities::auditSingleFile(synId,'syn5478487')
+auditV
+synapseUtilities::updateAnnotations(synId,c('assay','modelSystem'),c('arrayExpression','FALSE'),'disease')
+
+synId='syn3256507'
+auditV<-synapseUtilities::auditSingleFile(synId,'syn5478487')
+auditV
+synapseUtilities::updateAnnotations(synId,c('assay','modelSystem'),c('arrayExpression','FALSE'),'disease')
+
+synId='syn3256508'
+auditV<-synapseUtilities::auditSingleFile(synId,'syn5478487')
+auditV
+synapseUtilities::updateAnnotations(synId,c('assay','modelSystem'),c('arrayExpression','FALSE'),'disease')
+
+synId='syn3617056'
+auditV<-synapseUtilities::auditSingleFile(synId,'syn5478487')
+auditV
+synapseUtilities::updateAnnotations(synId,c('assay','modelSystem'),c('arrayExpression','FALSE'),'disease')
+
+synId='syn3617054'
+auditV<-synapseUtilities::auditSingleFile(synId,'syn5478487')
+auditV
+synapseUtilities::updateAnnotations(synId,c('assay','modelSystem'),c('arrayExpression','FALSE'),'disease')
+
+synId='syn5223705'
+auditV<-synapseUtilities::auditSingleFile(synId,'syn5478487')
+auditV
+
+foo <- synapseUtilities::longQueries('select name,id from file where projectId==\'syn2580853\' and tissueType!=\'\'')
