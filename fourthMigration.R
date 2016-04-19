@@ -311,3 +311,75 @@ synObj <- makeHeadFolder(synObj,internalFolder)
 synLinks <- populateNewDirectory2(internalParentFolder,synObj,topId=internalParentFolder)
 onWeb(internalParentFolder)
 
+
+##
+library(synapseUtilities)
+library(synapseClient)
+synapseLogin()
+fileId <- 'syn5600772'
+newFolderId <- 'syn5049298'
+onWeb(fileId)
+onWeb(newFolderId)
+synapseUtilities::moveSingleFile(fileId,newFolderId)
+
+fileId <- 'syn5600773'
+newFolderId <- 'syn5049298'
+onWeb(fileId)
+onWeb(newFolderId)
+synapseUtilities::moveSingleFile(fileId,newFolderId)
+
+foo <- synGet('syn5201007',downloadFile=F)
+bar <- synGetAnnotations(foo)
+bar <- as.list(bar)
+bar$summaryLevel <- 'transcript'
+foo2 <- synGet('syn5600772',downloadFile=F)
+synSetAnnotations(foo2) <- bar
+foo2 <- synStore(foo2,forceVersion=F)
+
+foo <- synGet('syn5201012',downloadFile=F)
+bar <- synGetAnnotations(foo)
+bar <- as.list(bar)
+bar$summaryLevel <- 'transcript'
+foo2 <- synGet('syn5600773',downloadFile=F)
+synSetAnnotations(foo2) <- bar
+foo2 <- synStore(foo2,forceVersion=F)
+
+
+#temporal cortex
+
+fileId <- 'syn5600755'
+newFolderId <- 'syn3163039'
+onWeb(fileId)
+onWeb(newFolderId)
+synapseUtilities::moveSingleFile(fileId,newFolderId)
+
+fileId <- 'syn5600752'
+newFolderId <- 'syn3163039'
+onWeb(fileId)
+onWeb(newFolderId)
+synapseUtilities::moveSingleFile(fileId,newFolderId)
+
+foo <- synGet('syn4650258',downloadFile=F)
+bar <- synGetAnnotations(foo)
+bar <- as.list(bar)
+bar$summaryLevel <- 'transcript'
+bar$normalizationStatus<- 'TRUE'
+foo2 <- synGet('syn5600755',downloadFile=F)
+synSetAnnotations(foo2) <- bar
+foo2 <- synStore(foo2,forceVersion=F)
+
+foo <- synGet('syn5201012',downloadFile=F)
+bar <- synGetAnnotations(foo)
+bar <- as.list(bar)
+bar$summaryLevel <- 'transcript'
+bar$normalizationStatus <- 'FALSE'
+foo2 <- synGet('syn5600752',downloadFile=F)
+synSetAnnotations(foo2) <- bar
+foo2 <- synStore(foo2,forceVersion=F)
+
+fileId <- 'syn5613314'
+newFolderId <- 'syn3163039'
+onWeb(fileId)
+onWeb(newFolderId)
+synapseUtilities::moveSingleFile(fileId,newFolderId)
+
