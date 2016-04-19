@@ -63,4 +63,3 @@ synLinks <- populateNewDirectory2(folderC,synObj,topId=folderC)
 #test reverse link
 source('RFunctions/reverseLink.R')
 reverseLink('syn4913741')
-

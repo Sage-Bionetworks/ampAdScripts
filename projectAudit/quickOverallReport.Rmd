@@ -1,0 +1,51 @@
+---
+title: "AMP-AD Annotation Audit"
+output: html_document
+---
+
+```{r}
+require(synapseClient)
+synapseLogin()
+firstFullAudit <- synTableQuery('SELECT * FROM syn5552829')
+secondFullAudit <- synTableQuery('SELECT * FROM syn5558021')
+```
+
+Here is how many entities were annotated in all of AMP-AD
+
+```{r}
+averageAnnotation <- c(mean(firstFullAudit@values$hasAnnotation),
+                       mean(secondFullAudit@values$hasAnnotation))
+names(averageAnnotation) <- c('First Audit','Second Audit')
+
+barplot(averageAnnotation,
+        ylab='% entities Annotated',
+        main='Annotation % across 9122 entities in AMP-AD',
+        ylim=c(0,1))
+```
+
+Here is the number of missing fields among the minimum required: Consortium, Center, Study, Disease, Assay, File Type, Model System, Tissue Type, Organism
+
+```{r}
+missingFields <- c(sum(as.matrix(!firstFullAudit@values[,c(4,6,5,8,18,16,24,14,17)])),
+                   sum(as.matrix(!secondFullAudit@values[,c(4,6,5,8,17,15,23,13,16)])))
+
+names(missingFields) <- c('First Audit','Second Audit')
+
+barplot(missingFields,
+        ylab='# missing necessary fields',
+        main='# missing fields across 9122 entities in AMP-AD')
+```
+
+Here is the number of dictionary errors
+
+```{r}
+dictionaryErrors <- c(sum(as.matrix(!firstFullAudit@values[,c(4,6,5,8,18,16,24,14,17)+21])),
+                   sum(as.matrix(!secondFullAudit@values[,c(4,6,5,8,17,15,23,13,16)+25])))
+
+names(dictionaryErrors) <- c('First Audit','Second Audit')
+
+barplot(dictionaryErrors,
+        ylab='# dictionary errors',
+        main='# dictionary errors across 9122 entities in AMP-AD')
+
+```

@@ -40,8 +40,10 @@ populateNewDirectory2 <- function(synId,G,Q=NULL,topId){
           #makeLink(G$name[e[i]],e[i],synId)
           #makeLink(G$name[e[i]],e[i],synId)
           w1 <- which(Q$adj[,Q$newid[e[i]]]==1)
-          print(Q$newid[w1])
-          makeLink(G$name[e[i]],e[i],Q$newid[w1])
+          #print(Q$newid[w1])
+          print(c(G$name[e[i]],Q$newid[w1],e[i]))
+          
+          makeLink(fileId=as.character(e[i]),parentId=as.character(Q$newid[w1]),linkName=as.character(G$name[e[i]]))
         } else{
           stop('Object type not recognized\n')
         }

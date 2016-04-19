@@ -1,0 +1,75 @@
+##
+## Go throught versions of file Entities and verifies that first version
+## and latest version have the same files.
+##
+import synapseclient
+import pandas as pd
+from multiprocessing.dummy import Pool
+
+FOLDERS = ['syn5480006','syn4055270','syn5519740','syn4518517','syn4518661','syn4486837',
+           'syn4486995','syn4228560','syn4228582','syn4164376','syn4164988']
+QUERY = "select id, versionNumber from file where parentId=='%s'"
+
+
+def with_progress_bar(func, totalCalls, prefix = '', postfix='', isBytes=False):
+    """Adds a progress bar to calls to func
+
+    :param func: Function being wrapped with progress Bar
+    :param totalCalls: total number of items/bytes when completed
+    :param prefix: String printed before progress bar
+    :param prefix: String printed after progress bar
+    :param isBytes: A boolean indicating weather to convert bytes to kB, MB, GB etc.
+    """
+    from multiprocessing import Value, Lock
+    completed = Value('d', 0)
+    lock = Lock()
+
+    def progress(*args, **kwargs):
+        with lock:
+            completed.value +=1
+        synapseclient.utils.printTransferProgress(completed.value, totalCalls, prefix, postfix, isBytes)
+        return func(*args, **kwargs)
+    return progress
+
+def getFileMetadata(synId, version):
+	fileHandles = syn.restGET('/entity/%s/version/%s/filehandles' %(synId, version))
+        fileHandles = pd.DataFrame(fileHandles['list']).drop_duplicates()
+        fileHandles = fileHandles.drop(set(fileHandles.columns) & set(['previewId']), 1)
+        assert len(fileHandles)==1
+        return  fileHandles.to_dict('list')
+
+def getVersions(synId):
+    df = pd.DataFrame(syn.restGET('/entity/%s/version' %synId)['results'])
+    filehandles = pd.DataFrame([getFileMetadata(synId, version) for version in df.versionNumber])
+    return pd.concat([df, filehandles], 1)
+
+
+syn=synapseclient.Synapse()
+syn.login(silent=True) 
+mp = Pool(8) 
+
+allFiles=[]
+for folder in FOLDERS:
+    print syn.get(folder).name
+    fileEntities = pd.DataFrame(syn.query(QUERY%folder)['results'])
+    func =  with_progress_bar(lambda row:  getVersions(row[1]['file.id']), len(fileEntities))
+    fileVersions = mp.map(func, fileEntities.iterrows())
+    allFiles.extend(fileVersions)
+    
+df = pd.concat(allFiles)
+
+#Combine all 
+df = df.T.groupby(level=0).first().T #Remove duplicate md5 and contentSize etc.
+#Validate that name, size, md5 are same
+all_pivoted = df.pivot('id', 'versionNumber')
+size = all_pivoted['contentSize']
+assert all(size.eq(size.iloc[:, 0], axis=0).all(1))
+names = all_pivoted['fileName']
+#Print the synIds of the files with missign filenames
+print names[~names.eq(names.iloc[:, 0], axis=0).all(1)]
+#Some of the version 1 files have the wrong md5 but contain a dash make sure that all
+#missmatching md5s have an md5 for version 1 that contain a -
+contentMd5 = all_pivoted['contentMd5']
+missmatchedIdx = ~contentMd5.eq(contentMd5.iloc[:, 0], axis=0).all(1)
+assert sum(contentMd5[missmatchedIdx][1].str.contains('-'))==sum(missmatchedIdx)
+all_pivoted.to_csv('moved_files.csv')
