@@ -72,7 +72,7 @@ synObj <- makeHeadFolder(synObj,internalFolder)
 synLinks <- populateNewDirectory2(internalParentFolder,synObj,topId=internalParentFolder)
 onWeb(internalParentFolder)
 
-#######Mount Sinai ROSMAP CEL Files
+#######Mount Sinai Raw CEL Files
 internalFolder <- 'syn4552659'
 internalParentFolder <- 'syn3163721'
 publicFolder <- 'syn3219494'
