@@ -117,4 +117,58 @@ annotations(foobar) <- list(center='Broad-Rush',
 
 annotations(foobar)
 
-#synStore(foobar,used='syn5706553',executed='https://github.com/Sage-Bionetworks/ampAdScripts/blob/2f8ddbae9a818d48f470fd4ba5d925e70d129749/Broad-Rush/migrateNewFiles.R')
+synStore(foobar,used='syn5706553',executed='https://github.com/Sage-Bionetworks/ampAdScripts/blob/8022e70ab9db0803ccfebee79086cfdc168df195/Broad-Rush/migrateNewFiles.R')
+
+
+fileId <- 'syn5856115'
+onWeb(fileId)
+foo <- synGet(fileId,downloadFile=F)
+annotations(foo)
+annotations(foo) <- list(center='Broad-Rush',
+                         consortium='AMP-AD',
+                         platform='NanostringnCounter',
+                         fileType='raw',
+                         dataType='miRNA',
+                         assay='arraymiRNA',
+                         tissueOfOrigin='dorsolateralPrefrontalCortex',
+                         tissueTypeAbrv='DLPFC',
+                         study='ROSMAP',
+                         organism='HomoSapiens',
+                         modelSystem='FALSE')
+
+synSetProperty(foo,'name') <- 'ROSMAP_arraymiRNA_raw.zip'
+synSetProperty(foo,'fileNameOverride') <- 'ROSMAP_arraymiRNA_raw.zip'
+synStore(foo,forceVersion=F)
+#synSetProperty(foo,'parentId') <- 'syn3157275'
+
+newFolderId <- 'syn3387325'
+onWeb(fileId)
+onWeb(newFolderId)
+rSynapseUtilities::moveSingleFile(fileId,newFolderId)
+
+
+fileId <- 'syn5857921'
+onWeb(fileId)
+foo <- synGet(fileId,downloadFile=F)
+annotations(foo)
+annotations(foo) <- list(center='Broad-Rush',
+                         consortium='AMP-AD',
+                         platform='NanostringnCounter',
+                         fileType='csv',
+                         dataType='covariates',
+                         assay='arraymiRNA',
+                         tissueOfOrigin='dorsolateralPrefrontalCortex',
+                         tissueTypeAbrv='DLPFC',
+                         study='ROSMAP',
+                         organism='HomoSapiens',
+                         modelSystem='FALSE')
+
+synSetProperty(foo,'name') <- 'ROSMAP_arraymiRNA_covariates.csv'
+synSetProperty(foo,'fileNameOverride') <- 'ROSMAP_arraymiRNA_covariates.csv'
+synStore(foo,forceVersion=F)
+#synSetProperty(foo,'parentId') <- 'syn3157275'
+
+newFolderId <- 'syn3387325'
+onWeb(fileId)
+onWeb(newFolderId)
+rSynapseUtilities::moveSingleFile(fileId,newFolderId)
