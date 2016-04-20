@@ -93,3 +93,28 @@ annotations(foobar) <- list(center='Broad-Rush',
                             modelSystem='FALSE')
 
 annotations(foobar)
+synStore(foobar,used='syn5706552',executed='https://github.com/Sage-Bionetworks/ampAdScripts/blob/2f8ddbae9a818d48f470fd4ba5d925e70d129749/Broad-Rush/migrateNewFiles.R')
+
+
+fileId = 'syn5706553'
+library(xlsx)
+foo <- synGet(fileId)
+bar <- read.xlsx(foo@filePath,sheetName = 'Sheet1')
+colnames(bar) <- c('SampleID','ChIPBatch')
+bar[1:5,]
+write.csv(bar,file='ROSMAP_ChIPseq_covariates.csv',quote=F,row.names=F)
+foobar <- File('ROSMAP_ChIPseq_covariates.csv',parentId='syn4896408')
+annotations(foobar) <- list(center='Broad-Rush',
+                            consortium='AMP-AD',
+                            fileType='csv',
+                            dataType='covariates',
+                            assay='ChIPseq',
+                            tissueOfOrigin='dorsolateralPrefrontalCortex',
+                            tissueTypeAbrv='DLPFC',
+                            study='ROSMAP',
+                            organism='HomoSapiens',
+                            modelSystem='FALSE')
+
+annotations(foobar)
+
+#synStore(foobar,used='syn5706553',executed='https://github.com/Sage-Bionetworks/ampAdScripts/blob/2f8ddbae9a818d48f470fd4ba5d925e70d129749/Broad-Rush/migrateNewFiles.R')
