@@ -22,6 +22,24 @@ colnames(masterManifest)
 
 #make clinical file
 clinicalFile <- select(masterManifest,BB,PMI,RACE,AOD,CDR,SEX,NP.1,PlaqueMean,bbscore)
+colnames(clinicalFile)[1] <- 'individualIdentifier'
+
+write.csv(clinicalFile,file='MSBB_clinical.csv',quote=F,row.names=F)
+
+fooObj1 <- File('MSBB_clinical.csv',parentId='syn6100546')
+synSetAnnotations(fooObj1) <- list(fileType='csv',
+                                   study='MSBB',
+                                   center='MSSM',
+                                   dataType='covariates',
+                                   consortium='AMP-AD',
+                                   organism='HomoSapiens')
+
+fooObj1 <- synStore(fooObj1,
+                    used=as.list(c('syn5475828')),
+                    executed=as.list('https://github.com/Sage-Bionetworks/ampAdScripts/blob/2cc627e67d63c2c167083a5a1783dfed27977110/Mount-Sinai/cleanUpClinical.R'))
+
+
+
 
 #rnaseq files
 fooPublicBam <- synQuery('select name,id from file where projectId==\'syn2580853\' and fileType==\'bam\' and study==\'MSBB\' and assay==\'RNAseq\'')
@@ -255,6 +273,6 @@ synSetAnnotations(fooObj1) <- list(fileType='csv',
 
 fooObj1 <- synStore(fooObj1,
                     used=as.list(c('syn5475828')),
-                    executed=as.list('https://github.com/Sage-Bionetworks/ampAdScripts/blob/8690507535a8134cab6534c9815fa6a9b0094d38/Mount-Sinai/cleanUpClinical.R'))
+                    executed=as.list('https://github.com/Sage-Bionetworks/ampAdScripts/blob/2cc627e67d63c2c167083a5a1783dfed27977110/Mount-Sinai/cleanUpClinical.R'))
 
 
