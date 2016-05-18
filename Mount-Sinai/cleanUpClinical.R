@@ -39,8 +39,6 @@ fooObj1 <- synStore(fooObj1,
                     executed=as.list('https://github.com/Sage-Bionetworks/ampAdScripts/blob/2cc627e67d63c2c167083a5a1783dfed27977110/Mount-Sinai/cleanUpClinical.R'))
 
 
-
-
 #rnaseq files
 fooPublicBam <- synQuery('select name,id from file where projectId==\'syn2580853\' and fileType==\'bam\' and study==\'MSBB\' and assay==\'RNAseq\'')
 fooPublicFastq <- synQuery('select name,id from file where projectId==\'syn2580853\' and fileType==\'fastq\' and study==\'MSBB\' and assay==\'RNAseq\'')
@@ -276,3 +274,23 @@ fooObj1 <- synStore(fooObj1,
                     executed=as.list('https://github.com/Sage-Bionetworks/ampAdScripts/blob/2cc627e67d63c2c167083a5a1783dfed27977110/Mount-Sinai/cleanUpClinical.R'))
 
 
+
+#####additional duplication stuff
+duplicateFiles <- fooFinal$fileName[duplicated(fooFinal$fileName)]
+duplicateMatrix <- filter(fooFinal,fileName%in%duplicateFiles) %>% arrange(fileName)
+
+
+write.csv(duplicateMatrix,file='MSBB_RNAseq_duplicates.csv',parentId='syn6100546')
+synSetAnnotations(fooObj1) <- list(fileType='csv',
+                                   study='MSBB',
+                                   center='MSSM',
+                                   dataType='covariates',
+                                   consortium='AMP-AD',
+                                   organism='HomoSapiens')
+
+fooObj1 <- synStore(fooObj1,
+                    used=as.list(c('syn5475828')),
+                    executed=as.list('https://github.com/Sage-Bionetworks/ampAdScripts/blob/2cc627e67d63c2c167083a5a1783dfed27977110/Mount-Sinai/cleanUpClinical.R'))
+
+
+sapply(duplicateMatrix$synapseId[1:4],onWeb)
