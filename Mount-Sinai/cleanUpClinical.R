@@ -208,11 +208,53 @@ synSetAnnotations(fooObj1) <- list(fileType='csv',
 
 fooObj1 <- synStore(fooObj1,
                     used=as.list(c('syn5475828','syn5898489')),
-                    executed=as.list(''))
+                    executed=as.list('https://github.com/Sage-Bionetworks/ampAdScripts/blob/8690507535a8134cab6534c9815fa6a9b0094d38/Mount-Sinai/cleanUpClinical.R'))
 
 
 #issues: 
 #duplicated file names
 #missing brain bank ids
+
+#protoemics
+library(synapseClient)
+synapseLogin()
+proteomeQuery <- synQuery('select name,id from file where parentId==\'syn6038797\'')
+
+#issues: prtoeomics identifiers do not match, need to verify mapping to brainBank identifiers
+
+#wes
+
+wesQuery1 <- synQuery('select name,id from file where parentId==\'syn5519740\'')
+wesQuery2 <- synQuery('select name,id from file where parentId==\'syn5012301\'')
+wesQuery3 <- synQuery('select name,id from file where parentId==\'syn5511621\'')
+
+wesQuery <- rbind(wesQuery1,wesQuery2,wesQuery3)
+wesQuery <- mutate(wesQuery,sampleIdentifier=sapply(wesQuery$file.name,pullOffIdentifier))
+
+pullOffBarcode <- function(x){
+  return(strsplit(x,'_')[[1]][3])
+}
+
+wesQuery <- mutate(wesQuery,barcode = sapply(wesQuery$sampleIdentifier,pullOffBarcode))
+masterWES <- select(masterManifest,BB,DNA.Barcode,DNA.Region)
+
+wesMatrix <- merge(wesQuery,masterWES,by.x='barcode',by.y='DNA.Barcode',all = TRUE)
+wesMatrix <- select(wesMatrix, sampleIdentifier,file.name,file.id,barcode,BB,DNA.Region)
+wesMatrix[1:5,]
+
+colnames(wesMatrix) <- c('sampleIdentifier','fileName','synapseId','barcode','individualIdentifier','BrodmannArea')
+write.csv(wesMatrix,file='MSBB_WES_covariates.csv',quote=F,row.names=F)
+
+fooObj1 <- File('MSBB_WES_covariates.csv',parentId='syn6100546')
+synSetAnnotations(fooObj1) <- list(fileType='csv',
+                                   study='MSBB',
+                                   center='MSSM',
+                                   dataType='covariates',
+                                   consortium='AMP-AD',
+                                   organism='HomoSapiens')
+
+fooObj1 <- synStore(fooObj1,
+                    used=as.list(c('syn5475828')),
+                    executed=as.list('https://github.com/Sage-Bionetworks/ampAdScripts/blob/8690507535a8134cab6534c9815fa6a9b0094d38/Mount-Sinai/cleanUpClinical.R'))
 
 
