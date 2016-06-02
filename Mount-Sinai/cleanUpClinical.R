@@ -212,9 +212,11 @@ colnames(fooAllCombined) <- c('sampleIdentifier','fileName','synapseId','sampleI
 fooFinal <- select(fooAllCombined,-sampleIdentifierOld,-newIdentifier,-newBarcode)
 View(fooFinal)
 
+#write.csv(fooFinal,file='MSBB_RNAseq_covariates.csv',quote=F,row.names=F)
 write.csv(fooFinal,file='MSBB_RNAseq_covariates.csv',quote=F,row.names=F)
 
-fooObj1 <- File('MSBB_RNAseq_covariates.csv',parentId='syn6100546')
+#fooObj1 <- File('MSBB_RNAseq_covariates.csv',parentId='syn6100546')
+fooObj1 <- synGet('syn6100548')
 synSetAnnotations(fooObj1) <- list(fileType='csv',
                                    study='MSBB',
                                    center='MSSM',
@@ -280,7 +282,9 @@ duplicateFiles <- fooFinal$fileName[duplicated(fooFinal$fileName)]
 duplicateMatrix <- filter(fooFinal,fileName%in%duplicateFiles) %>% arrange(fileName)
 
 
-write.csv(duplicateMatrix,file='MSBB_RNAseq_duplicates.csv',parentId='syn6100546')
+write.csv(duplicateMatrix,file='MSBB_RNAseq_duplicates.csv',quote=F,row.names=F)
+
+fooObj1 <- File('MSBB_RNAseq_duplicates.csv',parentId='syn6100546')
 synSetAnnotations(fooObj1) <- list(fileType='csv',
                                    study='MSBB',
                                    center='MSSM',
@@ -289,8 +293,10 @@ synSetAnnotations(fooObj1) <- list(fileType='csv',
                                    organism='HomoSapiens')
 
 fooObj1 <- synStore(fooObj1,
-                    used=as.list(c('syn5475828')),
+                    used=as.list(c('syn6100548')),
                     executed=as.list('https://github.com/Sage-Bionetworks/ampAdScripts/blob/2cc627e67d63c2c167083a5a1783dfed27977110/Mount-Sinai/cleanUpClinical.R'))
 
 
 sapply(duplicateMatrix$synapseId[1:4],onWeb)
+
+
