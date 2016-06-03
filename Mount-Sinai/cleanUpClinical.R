@@ -226,7 +226,7 @@ synSetAnnotations(fooObj1) <- list(fileType='csv',
 
 fooObj1 <- synStore(fooObj1,
                     used=as.list(c('syn5475828','syn5898489')),
-                    executed=as.list('https://github.com/Sage-Bionetworks/ampAdScripts/blob/8690507535a8134cab6534c9815fa6a9b0094d38/Mount-Sinai/cleanUpClinical.R'))
+                    executed=as.list('https://github.com/Sage-Bionetworks/ampAdScripts/blob/7b9f40eb29b8bb3129194559da384ce6623b93d2/Mount-Sinai/cleanUpClinical.R'))
 
 
 #issues: 
@@ -298,5 +298,9 @@ fooObj1 <- synStore(fooObj1,
 
 
 sapply(duplicateMatrix$synapseId[1:4],onWeb)
+fooRnaseq <- fread('~/Desktop/MSBB_RNAseq_covariates_May2016.csv',data.table=F)
 
-
+fooRnaseq <- dplyr::select(fooRnaseq,synapseId,TotalReads,Mapped,rRNA.rate)
+fooAllNew <- merge(fooFinal,fooRnaseq,by='synapseId')
+fooAllNew <- select(fooAllNew,-preferredSample)
+write.csv(fooFinal,file='MSBB_RNAseq_covariates.csv',quote=F,row.names=F)
