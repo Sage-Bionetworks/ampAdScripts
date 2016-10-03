@@ -1,3 +1,8 @@
+---
+output: 
+  html_document: 
+    keep_md: yes
+---
 ```{r libs, echo=FALSE, warning=FALSE, message=FALSE}
 library(stringr)
 library(plyr)
@@ -16,10 +21,22 @@ getXMLValue <- function(x) {
 }
 
 myFxn <- function(x) {
-  foo <- xmlDoc(x)  
+  # Only gets Last name and initial
+  foo <- xmlDoc(x)
   
-  name.data <- xmlToDataFrame(getNodeSet(foo, "//Author"), homogeneous=FALSE)
+  # name.data <- xmlToDataFrame(getNodeSet(foo, "//Author"), 
+  #                             homogeneous = FALSE)
 
+  name.data.last <- xmlToDataFrame(getNodeSet(foo, "//Author//LastName"),
+                                   homogeneous = FALSE)
+
+  colnames(name.data.last) <- "LastName"
+
+  name.data.initial <- xmlToDataFrame(getNodeSet(foo, "//Author//Initials"),
+                                      homogeneous = FALSE)
+  colnames(name.data.initial) <- "Initials"
+  name.data <- cbind(name.data.last, name.data.initial)
+  
   auth.names <- transform(name.data,
                           Author=sprintf("%s %s", LastName, Initials, collapse=", "))
   
@@ -64,12 +81,15 @@ getPubList <- function(searchUrl) {
   pubmedArts <- xmlChildren(xmlRoot(testDoc))
   names(pubmedArts) <- Idlist
 
-  pubsDF <- ldply(pubmedArts, myFxn, .id="PMID")
+  # Ignore any pubs without authors with LastName and Initials
+  pubsDF <- ldply(pubmedArts, 
+                  function(x) tryCatch(myFxn(x), error=function(e) data.frame()),
+                  .id="PMID")
 }
 ```
 ```{r}
 q <- "(De+Jager[Author+-+Last]+OR+Bennett[Author+-+Last]+AND+AG046152[Grant+Number])+OR+AG046170[Grant+Number]+OR+AG046139[Grant+Number]"
-pubmedQueryString <- "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=(De+Jager[Author+-+Last]+OR+Bennett[Author+-+Last]+AND+AG046152[Grant+Number])+OR+AG046170[Grant+Number]+OR+AG046139[Grant+Number]+OR+AG046161[Grant+Number]"
+pubmedQueryString <- "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=((De+Jager[Author+-+Last]+OR+Bennett[Author+-+Last])+AND+AG046152[Grant+Number])+OR+AG046170[Grant+Number]+OR+AG046139[Grant+Number]+OR+AG046161[Grant+Number]&retmax=1000"
 
 pubsDF <- getPubList(pubmedQueryString)
 pubsDF <- transform(pubsDF, 
